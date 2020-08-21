@@ -1,0 +1,18 @@
+.jumbo-travel {
+    border-radius: 10px;
+    padding: 2rem;
+    color: #FFF;
+    background-image: linear-gradient(rgba(	142, 68, 173,0.8), rgba(	142, 68, 173,0.8)), url("https://international.utk.edu/files/2018/02/Travel-site.jpg");
+    background-size: cover;
+}
+
+.card {
+    color: #000;
+    font-size: 0.8rem;
+}
+
+.card-content {
+    letter-spacing: 0.1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}

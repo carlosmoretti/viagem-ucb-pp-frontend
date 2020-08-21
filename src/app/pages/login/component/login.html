@@ -1,0 +1,23 @@
+<div class="d-flex h-100">
+    <div class="w-25 m-auto">
+        <div class="card">
+            <div class="card-header">Autenticação</div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label class="required">Nome de Usuário</label>
+                    <input #login type="text" class="form-control form-control-sm" />
+                </div>
+                <div class="form-group">
+                    <label class="required">Senha</label>
+                    <input #senha type="password" class="form-control form-control-sm" />
+                </div>
+                <div class="d-flex">
+                    <!-- <button class="btn btn-sm btn-success" [routerLink]="['/home', 'dashboard']">Autenticar</button> -->
+                    <button class="btn btn-sm btn-success" (click)="autenticar(login.value, senha.value)">Autenticar</button>
+                    <a href="#" class="ml-auto">Criar uma conta.</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

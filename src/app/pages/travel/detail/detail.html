@@ -1,0 +1,90 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#" routerLink="/home/dashboard">Início</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Viagem</li>
+        <li class="breadcrumb-item active" aria-current="page">Cadastrar</li>
+    </ol>
+</nav>
+<div class="smallsize">CRIE SUA VIAGEM</div>
+<div class="row mt-4">
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label>ENDEREÇO DE PARTIDA</label>
+            <input type="text" class="form-control form-control-sm" [ngClass]="{ 'is-invalid': (saida.length > 50 || !saida) && validateFields }" [(ngModel)]="saida"/>
+            <div class="invalid-feedback" *ngIf="saida.length > 50">
+                O endereço de partida não pode possuir mais de 50 caracteres.
+            </div>
+            <div class="invalid-feedback" *ngIf="!saida">
+                O endereço de partida deve ser preenchido.
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            <div class="d-flex">
+                <label>ENDEREÇO DE RETORNO</label>
+                <a [routerLink]="" class="ml-auto" (click)="retorno = saida">Mesmo endereço de partida</a>
+            </div>
+            <input type="text" class="form-control form-control-sm" [ngClass]="{ 'is-invalid': (retorno.length > 50 || !retorno) && validateFields }" [(ngModel)]="retorno"/>
+            <div class="invalid-feedback" *ngIf="retorno.length > 50">
+                O endereço de retorno não pode possuir mais de 50 caracteres.
+            </div>
+            <div class="invalid-feedback" *ngIf="!retorno">
+                O endereço de retorno deve ser preenchido.
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <label>ORÇAMENTO ESTIPULADO</label>
+        <input [(ngModel)]="orcamento" [ngClass]="{ 'is-invalid' : !orcamento && validateFields }" type="number" min="0.00" max="10000.00" class="form-control form-control-sm" />
+        <div class="invalid-feedback" *ngIf="!orcamento && validateFields">
+            O orçamento estipulado para essa viagem deve ser preenchido.
+        </div>
+    </div>
+</div>
+<hr />
+<div class="d-flex">
+    <div class="smallsize mb-3">DESTINOS ({{destinos.length}})</div>
+    <a [routerLink]="" (click)="addVisible = !addVisible" class="ml-auto">
+        {{addVisible ? 'Esconder' : 'Mostrar'}} inclusão de destino
+    </a>
+</div>
+<div class="row" *ngIf="addVisible">
+    <div class="col-sm-12">
+        <div class="form-group">
+            <label>ENDEREÇO DESTINO</label>
+            <div class="d-flex">
+                <input [(ngModel)]="destino" type="text" class="form-control form-control-sm" placeholder="Insira o endereço de destino a ser adicionado" [ngClass]="{ 'is-invalid' : !destino }"/>
+                <button class="btn btn-sm btn-success rounded-0" (click)="destinos.push(destino); destino = null">Adicionar</button>
+            </div>
+            <div class="text-small text-danger" *ngIf="!destino">O campo de destino não pode ficar em branco.</div>
+        </div>
+    </div>
+</div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Local</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngIf="saida">
+            <td colspan="2">
+                <div class="badge badge-success">SAÍDA</div> {{saida}}
+            </td>
+        </tr>
+        <tr *ngFor="let item of destinos; let i = index">
+            <td><div class="badge badge-info"><i class="fas fa-arrow-down"></i> PRÓXIMO DESTINO</div> {{item}}</td>
+            <td>
+                <div class="float-right d-flex">
+                    <button class="btn btn-sm btn-danger" (click)="destinos.splice(i, 1)">Remover</button>
+                </div>
+            </td>
+        </tr>
+        <tr *ngIf="retorno">
+            <td colspan="2"><div class="badge badge-success">CHEGADA</div> {{retorno}}</td>
+        </tr>
+    </tbody>
+</table>
+<button class="btn btn-sm btn-success float-right" (click)="validateFields = true">Salvar Viagem</button>
