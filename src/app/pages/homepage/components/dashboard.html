@@ -36,7 +36,7 @@
                     </div>
                     <div class="period mb-2">
                         <div class="card-content">PERÍODO</div>
-                        <span>{{item.inicio}} até {{item.fim}}</span>
+                        <span>{{item.inicio | date: 'dd/MM/yyyy'}} até {{item.fim | date: 'dd/MM/yyyy'}}</span>
                     </div>
                     <button class="btn btn-sm btn-danger" routerLink="/home/timeline">ATIVIDADES</button>
                 </div>

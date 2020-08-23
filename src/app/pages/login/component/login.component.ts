@@ -8,8 +8,14 @@ import { AuthGuard } from 'src/app/guards/auth.guard';
     styleUrls: ["login.css"]
 })
 
-export class LoginComponent {
+export class LoginComponent implements OnInit {
     constructor(private login: LoginService, private router: Router) {
+    }
+
+    ngOnInit() {
+        if(this.login.token != null) {
+            this.router.navigate(["home"]);
+        }
     }
 
     autenticar(login: String, senha: String) {
