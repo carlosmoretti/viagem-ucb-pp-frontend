@@ -1,0 +1,56 @@
+<div class="d-flex h-100">
+    <div class="m-auto w-50">
+        <div class="card">
+            <div class="card-header">Cadastre-se</div>
+            <div class="card-body">
+                <div class="alert alert-danger" *ngIf="error && !success">
+                    {{error}}
+                </div>
+                <div class="alert alert-success" *ngIf="success">
+                    {{success}} <a [routerLink]="['/login']">Clique aqui.</a>
+                </div>
+                <form [formGroup]="form">
+                    <div class="form-group">
+                        <label class="required">Nome</label>
+                        <input formControlName="nome" class="form-control form-control-sm" [ngClass]="{ 'is-invalid' : form.controls.nome.errors && confirm }" type="text"/>
+                        <div class="invalid-feedback" *ngIf="form.controls.nome.errors?.required">
+                            O seu nome é obrigatório.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Sobrenome</label>
+                        <input formControlName="sobrenome" class="form-control form-control-sm" [ngClass]="{ 'is-invalid' : form.controls.sobrenome.errors && confirm }" type="text"/>
+                        <div class="invalid-feedback" *ngIf="form.controls.sobrenome.errors?.required">
+                            O seu sobrenome é obrigatório.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Nome de Usuário</label>
+                        <input formControlName="username" class="form-control form-control-sm" [ngClass]="{ 'is-invalid' : form.controls.username.errors && confirm }" type="text"/>
+                        <div class="invalid-feedback" *ngIf="form.controls.username.errors?.required">
+                            O seu nome de usuário é obrigatório.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Senha</label>
+                        <input formControlName="password" class="form-control form-control-sm" [ngClass]="{ 'is-invalid' : form.controls.password.errors && confirm }" type="text"/>
+                        <div class="invalid-feedback" *ngIf="form.controls.password.errors?.required">
+                            A sua senha é obrigatória.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Repita a sua senha</label>
+                        <input formControlName="repitaSenha" class="form-control form-control-sm" [ngClass]="{ 'is-invalid' : (form.value.repitaSenha != form.value.password || form.controls.repitaSenha.errors) && confirm } " type="text"/>
+                        <div class="invalid-feedback" *ngIf="form.controls.repitaSenha.errors?.required">
+                            A confirmação de senha precisa ser igual a senha digitada.
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-sm btn-info" (click)="createAccount()">Cadastrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

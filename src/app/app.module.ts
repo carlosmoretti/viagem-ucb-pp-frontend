@@ -11,6 +11,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthGuard } from './guards/auth.guard';
 import { JwtHelperService, JWT_OPTIONS  } from '@auth0/angular-jwt';
 import { JwtRequestInterceptor } from './interceptors/jwt.interceptor';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,9 @@ import { JwtRequestInterceptor } from './interceptors/jwt.interceptor';
     AppRoutingModule,
     HttpClientModule,
     LoginModule,
-    NgbModule
+    NgbModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
