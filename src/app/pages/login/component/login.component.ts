@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { LoginService } from '../../../service/login-service/login.service';
 import { Router } from '@angular/router';
-import { AuthGuard } from 'src/app/guards/auth.guard';
 
 @Component({
     templateUrl: "login.html",
@@ -11,6 +10,8 @@ import { AuthGuard } from 'src/app/guards/auth.guard';
 export class LoginComponent implements OnInit {
     constructor(private login: LoginService, private router: Router) {
     }
+
+    public erroLogin: boolean = false;
 
     ngOnInit() {
         if(this.login.token != null) {
@@ -23,6 +24,8 @@ export class LoginComponent implements OnInit {
             .subscribe(d=> {
                 this.login.setSession(d.token);
                 this.router.navigate(["home"]);
+            }, e => {
+                this.erroLogin = true;
             });
     }
 }

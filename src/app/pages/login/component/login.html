@@ -3,6 +3,9 @@
         <div class="card">
             <div class="card-header">Autenticação</div>
             <div class="card-body">
+                <div class="alert alert-danger" *ngIf="erroLogin">
+                    Não foi possível validar as suas credenciais, tente novamente!
+                </div>
                 <div class="form-group">
                     <label class="required">Nome de Usuário</label>
                     <input #login type="text" class="form-control form-control-sm" />
