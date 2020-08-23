@@ -33,7 +33,7 @@ export class RegisterComponent implements OnInit {
         console.log(this.form);
         console.log(this.repitaSenha, this.form.value.senha);
 
-        if(this.form.valid) {
+        if(this.form.valid && this.form.value.password == this.form.value.repitaSenha) {
             this.service.AdicionarUsuario(this.form.value)
             .subscribe(d=> {
                 this.success = "O seu usuário foi cadastrado com sucesso. Autentique-se agora!"
