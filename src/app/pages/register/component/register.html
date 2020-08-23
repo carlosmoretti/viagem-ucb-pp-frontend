@@ -41,7 +41,7 @@
                     <div class="form-group">
                         <label class="required">Repita a sua senha</label>
                         <input formControlName="repitaSenha" class="form-control form-control-sm" [ngClass]="{ 'is-invalid' : (form.value.repitaSenha != form.value.password || form.controls.repitaSenha.errors) && confirm } " type="password"/>
-                        <div class="invalid-feedback" *ngIf="form.controls.repitaSenha.errors?.required">
+                        <div class="invalid-feedback" *ngIf="form.controls.repitaSenha.errors?.required || form.value.repitaSenha != form.value.password">
                             A confirmação de senha precisa ser igual a senha digitada.
                         </div>
                     </div>
