@@ -12,7 +12,7 @@
     </div>
     <div class="ml-auto">
         <div class="btn btn-info btn-sm" [routerLink]="['/home', 'travel', 'create']" >
-            Cadastrar Viagem
+            Iniciar Viagem
         </div>
     </div>
 </div>
@@ -38,7 +38,7 @@
                         <div class="card-content">PERÍODO</div>
                         <span>{{item.inicio | date: 'dd/MM/yyyy'}} até {{item.fim | date: 'dd/MM/yyyy'}}</span>
                     </div>
-                    <button class="btn btn-sm btn-danger" routerLink="/home/timeline">ATIVIDADES</button>
+                    <button class="btn btn-sm btn-danger" routerLink="/home/timeline">OCORRÊNCIAS</button>
                 </div>
             </div>
         </div>
