@@ -12,23 +12,24 @@ export class DashboardComponent implements OnInit {
     constructor(private service: ViagemService) {
     }
 
-    // viagens =  [
-    //     { origem: "Niteroi, Rio de Janeiro - RJ", destino: "Aparecida do Norte, São Paulo - SP", inicio: "22/02/2020", fim: "22/03/2020" },
-    //     { origem: "São Gonçalo, Rio de Janeiro - RJ", destino: "Lages, Rio Grande do Sul - RS", inicio: "22/02/2020", fim: "22/03/2020" },
-    //     { origem: "Niteroi, Rio de Janeiro - RJ", destino: "Aparecida do Norte, São Paulo - SP", inicio: "22/02/2020", fim: "22/03/2020" },
-    //     { origem: "Niteroi, Rio de Janeiro - RJ", destino: "Aparecida do Norte, São Paulo - SP", inicio: "22/02/2020", fim: "22/03/2020" },
-    //     { origem: "Niteroi, Rio de Janeiro - RJ", destino: "Aparecida do Norte, São Paulo - SP", inicio: "22/02/2020", fim: "22/03/2020" },
-    //     { origem: "Niteroi, Rio de Janeiro - RJ", destino: "Aparecida do Norte, São Paulo - SP", inicio: "22/02/2020", fim: "22/03/2020" },
-    //     { origem: "Niteroi, Rio de Janeiro - RJ", destino: "Aparecida do Norte, São Paulo - SP", inicio: "22/02/2020", fim: "22/03/2020" },
-    //     { origem: "Niteroi, Rio de Janeiro - RJ", destino: "Aparecida do Norte, São Paulo - SP", inicio: "22/02/2020", fim: "22/03/2020" },
-    //     { origem: "Niteroi, Rio de Janeiro - RJ", destino: "Aparecida do Norte, São Paulo - SP", inicio: "22/02/2020", fim: "22/03/2020" },
-    // ]
-
     ngOnInit() {
         this.service.getAll()
             .subscribe((d: any[])=> {
                 this.viagens = d;
+                console.log(d);
             })
+    }
+
+    origem(item: any[]) {
+        return item.find((e) => {
+            return e.tipoRota_Id == 1;
+        });
+    }
+
+    destino(item: any[]) {
+        return item.find((e) => {
+            return e.tipoRota_Id == 2;
+        });
     }
 
     get getViagens() {
