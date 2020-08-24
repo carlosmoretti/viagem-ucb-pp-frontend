@@ -12,6 +12,9 @@ import { AuthGuard } from './guards/auth.guard';
 import { JwtHelperService, JWT_OPTIONS  } from '@auth0/angular-jwt';
 import { JwtRequestInterceptor } from './interceptors/jwt.interceptor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
+import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
+import { LoadingBarModule } from '@ngx-loading-bar/core';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     LoginModule,
     NgbModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    LoadingBarHttpClientModule,
+    LoadingBarRouterModule,
+    LoadingBarModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
