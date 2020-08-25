@@ -57,8 +57,8 @@ export class TravelDetailComponent implements OnInit {
                 uf: this.saidaUf,
                 tipoRota_Id: 1
             },{
-                endereco: this.saida,
-                uf: this.saidaUf,
+                endereco: this.retorno,
+                uf: this.retornoUf,
                 tipoRota_Id: 2
             });
     
