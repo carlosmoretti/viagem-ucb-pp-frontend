@@ -16,3 +16,11 @@
     font-weight: bold;
     text-transform: uppercase;
 }
+
+.bg-danger {
+    color :#FFF;
+}
+
+.markedRemove {
+    opacity: 0.6 !important;
+}

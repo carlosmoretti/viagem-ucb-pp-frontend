@@ -13,4 +13,12 @@ export class ViagemService {
     getAll() {
         return this.http.get(environment.API_URL + "viagem");
     }
+
+    post(obj) {
+        return this.http.post(environment.API_URL + "viagem", obj);
+    }
+
+    delete(id) {
+        return this.http.delete(environment.API_URL + "viagem/" + id);
+    }
 }

@@ -9,6 +9,9 @@ export class DashboardComponent implements OnInit {
 
     viagens = [];
 
+    removeMessage: String;
+    removeId: number;
+
     constructor(private service: ViagemService) {
     }
 
@@ -30,6 +33,20 @@ export class DashboardComponent implements OnInit {
         return item.find((e) => {
             return e.tipoRota_Id == 2;
         });
+    }
+
+    removerViagem(item) {
+        this.removeMessage = `Confirma a exclusão da viagem ${this.origem(item.rotas).uf} — ${this.destino(item.rotas).uf}?`;
+        this.removeId = item.id;
+    }
+
+    confirmaRemove() {
+        this.service.delete(this.removeId)
+            .subscribe(d=> {
+                this.ngOnInit()
+                this.removeId = null;
+                this.removeMessage = null;
+            })
     }
 
     get getViagens() {
