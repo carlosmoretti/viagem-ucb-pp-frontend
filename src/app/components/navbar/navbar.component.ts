@@ -20,6 +20,6 @@ export class NavbarComponent {
     }
 
     get usuario() {
-        return this.loginService.decodeToken();
+        return this.loginService.decodeToken()["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
     }
 }
