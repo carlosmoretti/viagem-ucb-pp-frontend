@@ -19,14 +19,18 @@ export class JwtRequestInterceptor implements HttpInterceptor {
             }
         })
 
-        return next.handle(request).pipe(
-            catchError((error: any) => {
-              if (error.status == 401 || error.status == 0) {
-                  localStorage.removeItem("token");
-                  this.router.navigate(['/login']);
-              }
-              return of(error);
-            })
-          );
+        if(this.auth.token != null) {
+            return next.handle(request).pipe(
+                catchError((error: any) => {
+                    if (error.status === 401) {
+                        localStorage.removeItem("token");
+                        this.router.navigate(['/login']);
+                        return of(error);
+                    }
+                })
+              );
+        } else {
+            return next.handle(request);
+        }
     }
 }

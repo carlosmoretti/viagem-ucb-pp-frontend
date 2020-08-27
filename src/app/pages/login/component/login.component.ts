@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
             .subscribe(d=> {
                 this.login.setSession(d.token);
                 this.router.navigate(["home"]);
-            }, e => {
+            }, (e) => {
                 this.erroLogin = true;
             });
     }
