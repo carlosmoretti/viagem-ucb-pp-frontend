@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core'
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ViagemService } from 'src/app/service/viagem-service/viagem.service';
+import { MapsService } from 'src/app/service/maps-service/maps.service';
+import { switchMap, map } from 'rxjs/operators';
 
 @Component({
     templateUrl: "detail.html",
@@ -33,7 +35,7 @@ export class TravelDetailComponent implements OnInit {
     /**
      *
      */
-    constructor(private fb: FormBuilder, private service: ViagemService) {
+    constructor(private fb: FormBuilder, private service: ViagemService, private maps: MapsService) {
     }
 
     ngOnInit() {
@@ -41,27 +43,64 @@ export class TravelDetailComponent implements OnInit {
 
     adicionarDestino(endereco, uf) {
         if(endereco  && uf && uf.length == 2) {
-            this.destinos.push({
+
+            var tmp = {
                 endereco: endereco,
-                uf: uf
+                uf: uf,
+                coords: this.getRoute(endereco, uf),
+                distance: null,
+            };
+
+            var it: any;
+            var total = this.destinos.filter((e) => {
+                return e.tipoRota_Id == null;
             })
+            
+            if(total.length > 0) {            
+                it = total[total.length - 1];
+            } else {
+                it = this.destinos.find((e) => e.tipoRota_Id == 1);
+            }
+
+            it.coords
+                .subscribe((ori) => {
+                    tmp.coords.subscribe((dest) => {
+                        this.getDistance(ori.lat, ori.lng, dest.lat, dest.lng)
+                            .subscribe(resp => {
+                                tmp.distance = resp;
+                                console.log(ori.lat, ori.lng, dest.lat, dest.lng);
+
+                                console.log("Adicionando", tmp);
+                                this.destinos.push(tmp);
+                            });
+                    })
+                })
+        }
+    }
+
+    definirOrigemDestino(origem, origemuf, destino, destinouf) {
+        if(this.saida && this.saidaUf && this.retorno && this.retornoUf && this.dataPartida && this.dataRetorno && this.saidaUf.length == 2 && this.retornoUf.length == 2) {
+
+            this.destinos.push({
+                endereco: origem,
+                uf: origemuf,
+                coords: this.getRoute(origem, origemuf),
+                tipoRota_Id: 1
+            });
+    
+            this.destinos.push({
+                endereco: destino,
+                uf: destinouf,
+                coords: this.getRoute(destino, destinouf),
+                tipoRota_Id:2 
+            });
         }
     }
 
     salvar() {
         if(this.saida && this.saidaUf && this.retorno && this.retornoUf && this.dataPartida && this.dataRetorno && this.saidaUf.length == 2 && this.retornoUf.length == 2) {
 
-            var clone = JSON.parse(JSON.stringify(this.destinos));
-            clone.push({
-                endereco: this.saida,
-                uf: this.saidaUf,
-                tipoRota_Id: 1
-            },{
-                endereco: this.retorno,
-                uf: this.retornoUf,
-                tipoRota_Id: 2
-            });
-    
+            var clone = JSON.parse(JSON.stringify(this.destinos));    
             this.service.post({
                 rotas: clone,
                 inicio: this.dataPartida,
@@ -75,4 +114,41 @@ export class TravelDetailComponent implements OnInit {
             })
         }
     }
+
+    getRoute(address, uf) {
+        this.maps.toRoute(`${address}, ${uf}`)
+            .subscribe(d=> console.log(d));
+
+        return this.maps.toRoute(`${address}, ${uf}`)
+            .pipe(
+                map((d: any) => d.items[0].position)
+            )
+    }
+
+    getDistance(lat1, lng1, lat2, lng2) {
+        return this.maps.getDistance(lat1 + ", " + lng1, lat2 + ", " + lng2)
+            .pipe(
+                map((res: any) => res.routes[0].sections[0].summary.duration)
+            )
+    }
+
+    get wporigem() {
+        return this.destinos.find((e) => {
+            return e.tipoRota_Id == 1;
+        })
+    }
+
+    get wpdestino() {
+        return this.destinos.find((e) => {
+            return e.tipoRota_Id == 2;
+        })
+    }
+
+    get wps() {
+        return this.destinos.filter((e) => {
+            return e.tipoRota_Id == null;
+        })
+    }
+
+    
 }

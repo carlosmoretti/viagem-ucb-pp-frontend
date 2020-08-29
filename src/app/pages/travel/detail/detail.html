@@ -84,6 +84,9 @@
             Você deve preencher uma data de retorno.
         </div>
     </div>
+    <div class="col-sm-3">
+        <button class="btn btn-sm btn-info mt-4" (click)="validateFields = true; definirOrigemDestino(saida, saidaUf, retorno, retornoUf)">Salvar</button>
+    </div>
 </div>
 <hr />
 <div class="d-flex">
@@ -108,7 +111,7 @@
                     <label>UF</label>
                     <div class="d-flex">
                         <input #uf type="text" class="form-control form-control-sm" placeholder="UF"/>
-                        <button class="btn btn-sm btn-success rounded-0" (click)="adicionarDestino(destino.value, uf.value)">Adicionar</button>
+                        <button class="btn btn-sm btn-success rounded-0" (click)="adicionarDestino(destino.value, uf.value); destino.value = ''; uf.value = '';">Adicionar</button>
                     </div>
                 </div>
             </div>
@@ -121,26 +124,59 @@
     <thead>
         <tr>
             <th>Local</th>
+            <th>Lat</th>
+            <th>Long</th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngIf="saida">
-            <td colspan="2">
+        <!-- <tr *ngIf="saida">
+            <td colspan="4">
                 <div class="badge badge-success">SAÍDA</div> {{saida}} — {{saidaUf}}
             </td>
+        </tr> -->
+        <tr *ngIf="wporigem">
+            <td>
+                <div class="badge badge-success">SAÍDA</div>
+                {{wporigem.endereco}} — {{wporigem.uf}}
+            </td>
+            <td>{{(wporigem.coords | async)?.lat}}</td>
+            <td>{{(wporigem.coords | async)?.lng}}</td>
+            <td></td>
+            <td>
+            </td>
         </tr>
-        <tr *ngFor="let item of destinos; let i = index">
-            <td><div class="badge badge-info"><i class="fas fa-arrow-down"></i> PRÓXIMO DESTINO</div> {{item.endereco}} — {{item.uf}}</td>
+        <tr *ngFor="let item of wps; let i = index">
+            <td>
+                <div class="badge badge-info" *ngIf="item.tipoRota_Id == null"><i class="fas fa-arrow-down"></i> PRÓXIMO DESTINO</div>
+                <div class="badge badge-success" *ngIf="item.tipoRota_Id == 1">SAÍDA</div>
+                <div class="badge badge-success" *ngIf="item.tipoRota_Id == 2">CHEGADA</div>
+                {{item.endereco}} — {{item.uf}}
+            </td>
+            <td>{{(item.coords | async)?.lat}}</td>
+            <td>{{(item.coords | async)?.lng}}</td>
+            <td><span *ngIf="item.distance">{{(item.distance / 3600).toFixed(2)}} horas.</span></td>
             <td>
                 <div class="float-right d-flex">
-                    <button class="btn btn-sm btn-danger" (click)="destinos.splice(i, 1)">Remover</button>
+                    <button class="btn btn-sm btn-danger"  *ngIf="item.tipoRota_Id == null" (click)="destinos.splice(i, 1)">Remover</button>
                 </div>
             </td>
         </tr>
-        <tr *ngIf="retorno">
-            <td colspan="2"><div class="badge badge-success">CHEGADA</div> {{retorno}} — {{retornoUf}}</td>
+        <tr *ngIf="wpdestino">
+            <td>
+                <div class="badge badge-success">CHEGADA</div>
+                {{wpdestino.endereco}} — {{wpdestino.uf}}
+            </td>
+            <td>{{(wpdestino.coords | async)?.lat}}</td>
+            <td>{{(wpdestino.coords | async)?.lng}}</td>
+            <td></td>
+            <td>
+            </td>
         </tr>
+        <!-- <tr *ngIf="retorno">
+            
+        </tr> -->
     </tbody>
 </table>
 <button class="btn btn-sm btn-success float-right" (click)="validateFields = true; salvar()">Salvar Viagem</button>

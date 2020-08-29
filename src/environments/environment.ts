@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  API_URL: "http://localhost:51107/api/"
+  API_URL: "http://localhost:51107/api/",
+  HERE_API: "dylJEZpvJvTj2ew7kTNsmuhbIVEMtzogpY6QUsmXXJ4"
 };
 
 /*
