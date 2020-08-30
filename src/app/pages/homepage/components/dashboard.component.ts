@@ -7,7 +7,7 @@ import { ViagemService } from 'src/app/service/viagem-service/viagem.service';
 })
 export class DashboardComponent implements OnInit {
 
-    viagens = [];
+    viagens: Array<any> = [];
 
     removeMessage: String;
     removeId: number;

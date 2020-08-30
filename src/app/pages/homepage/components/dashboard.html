@@ -6,12 +6,12 @@
   </nav>
 
 <div class="d-flex">
-    <div>
+    <div *ngIf="viagens.length > 0">
         <div class="smallsize">SUAS VIAGENS</div>
         <h4>{{viagens.length}} VIAGEN(S) CADASTRADA(S).</h4>
     </div>
     <div class="ml-auto">
-        <div class="btn btn-info btn-sm" [routerLink]="['/home', 'travel', 'create']" >
+        <div class="btn btn-info btn-sm mb-1" [routerLink]="['/home', 'travel', 'create']" >
             Iniciar Viagem
         </div>
     </div>
@@ -23,7 +23,7 @@
         <button class="btn btn-sm btn-light" (click)="removeMessage = null; removeId = null">Cancelar</button>
     </div>
 </div>
-<div class="jumbo-travel mb-4">
+<div class="jumbo-travel mb-4" *ngIf="viagens.length > 0">
     <div class="row">
         <div class="col-sm-3 mb-4" *ngFor="let item of getViagens; let i = index">
             <div class="card" [ngClass]="{ 'markedRemove' : item.id == removeId }">

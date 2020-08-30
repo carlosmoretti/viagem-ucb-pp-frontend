@@ -156,10 +156,10 @@
             </td>
             <td>{{(item.coords | async)?.lat}}</td>
             <td>{{(item.coords | async)?.lng}}</td>
-            <td><span *ngIf="item.distance">{{(item.distance / 3600).toFixed(2)}} horas.</span></td>
+            <td><span *ngIf="item.distance">Média de {{(item.distance / 3600).toFixed(0)}} horas de viagem.</span></td>
             <td>
                 <div class="float-right d-flex">
-                    <button class="btn btn-sm btn-danger"  *ngIf="item.tipoRota_Id == null" (click)="destinos.splice(i, 1)">Remover</button>
+                    <button class="btn btn-sm btn-danger"  *ngIf="item.tipoRota_Id == null" (click)="removerDestino(item)">Remover</button>
                 </div>
             </td>
         </tr>

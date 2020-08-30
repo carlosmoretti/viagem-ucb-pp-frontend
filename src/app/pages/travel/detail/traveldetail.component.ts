@@ -68,9 +68,6 @@ export class TravelDetailComponent implements OnInit {
                         this.getDistance(ori.lat, ori.lng, dest.lat, dest.lng)
                             .subscribe(resp => {
                                 tmp.distance = resp;
-                                console.log(ori.lat, ori.lng, dest.lat, dest.lng);
-
-                                console.log("Adicionando", tmp);
                                 this.destinos.push(tmp);
                             });
                     })
@@ -80,6 +77,14 @@ export class TravelDetailComponent implements OnInit {
 
     definirOrigemDestino(origem, origemuf, destino, destinouf) {
         if(this.saida && this.saidaUf && this.retorno && this.retornoUf && this.dataPartida && this.dataRetorno && this.saidaUf.length == 2 && this.retornoUf.length == 2) {
+
+            if(this.wporigem != null) {
+                this.destinos = this.destinos.filter((e) => e.tipoRota_Id != 1);
+            }
+
+            if(this.wpdestino != null) {
+                this.destinos = this.destinos.filter((e) => e.tipoRota_Id != 2);
+            }
 
             this.destinos.push({
                 endereco: origem,
@@ -94,7 +99,17 @@ export class TravelDetailComponent implements OnInit {
                 coords: this.getRoute(destino, destinouf),
                 tipoRota_Id:2 
             });
+
+            this.recalcularDestinos();
         }
+    }
+
+    recalcularDestinos() {
+        var snapshot = <Array<any>>JSON.parse(JSON.stringify(this.wps));
+        this.destinos = this.destinos.filter((e) => e.tipoRota_Id != null);
+        snapshot.forEach((e) => {
+            this.adicionarDestino(e.endereco, e.uf);
+        })
     }
 
     salvar() {
@@ -130,6 +145,14 @@ export class TravelDetailComponent implements OnInit {
             .pipe(
                 map((res: any) => res.routes[0].sections[0].summary.duration)
             )
+    }
+
+    removerDestino(item) {
+        this.destinos = this.destinos.filter((e) => {
+            return e != item;
+        });
+
+        this.recalcularDestinos();
     }
 
     get wporigem() {
