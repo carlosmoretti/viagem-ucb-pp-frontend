@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core'
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ViagemService } from 'src/app/service/viagem-service/viagem.service';
@@ -27,15 +28,15 @@ export class TravelDetailComponent implements OnInit {
     validateFields = false;
     validateDestiny = false;
 
-    retornoTipo: String;
-    retornoMensagem: String;
+    retornoTipo: string;
+    retornoMensagem: any;
 
     private form: FormGroup;
 
     /**
      *
      */
-    constructor(private fb: FormBuilder, private service: ViagemService, private maps: MapsService) {
+    constructor(private fb: FormBuilder, private service: ViagemService, private maps: MapsService, private router: Router) {
     }
 
     ngOnInit() {
@@ -55,8 +56,8 @@ export class TravelDetailComponent implements OnInit {
             var total = this.destinos.filter((e) => {
                 return e.tipoRota_Id == null;
             })
-            
-            if(total.length > 0) {            
+
+            if(total.length > 0) {
                 it = total[total.length - 1];
             } else {
                 it = this.destinos.find((e) => e.tipoRota_Id == 1);
@@ -92,12 +93,12 @@ export class TravelDetailComponent implements OnInit {
                 coords: this.getRoute(origem, origemuf),
                 tipoRota_Id: 1
             });
-    
+
             this.destinos.push({
                 endereco: destino,
                 uf: destinouf,
                 coords: this.getRoute(destino, destinouf),
-                tipoRota_Id:2 
+                tipoRota_Id:2
             });
 
             this.recalcularDestinos();
@@ -115,14 +116,21 @@ export class TravelDetailComponent implements OnInit {
     salvar() {
         if(this.saida && this.saidaUf && this.retorno && this.retornoUf && this.dataPartida && this.dataRetorno && this.saidaUf.length == 2 && this.retornoUf.length == 2) {
 
-            var clone = JSON.parse(JSON.stringify(this.destinos));    
+            var clone = JSON.parse(JSON.stringify(this.destinos));
             this.service.post({
                 rotas: clone,
                 inicio: this.dataPartida,
                 fim: this.dataRetorno
             }).subscribe(d=> {
                 this.retornoTipo = "sucesso";
-                this.retornoMensagem = "A sua viagem foi cadastrada com sucesso."
+                this.retornoMensagem = {
+                  text: "A sua viagem foi cadastrada com sucesso.",
+                  action: {
+                    text: "Voltar",
+                    route: ['/home']
+                  }
+                }
+                this.clearFields();
             }, err => {
                 this.retornoTipo = "erro";
                 this.retornoMensagem = "Não foi possível cadastrar essa viagem. Verifique se alguma informação ficou pendente!"
@@ -155,13 +163,23 @@ export class TravelDetailComponent implements OnInit {
         this.recalcularDestinos();
     }
 
-    get wporigem() {
+    clearFields() {
+      this.saida = '';
+      this.saidaUf = '';
+      this.retorno = '';
+      this.retornoUf = '';
+      this.dataPartida = '';
+      this.dataRetorno = '';
+      this.destinos = [];
+    }
+
+    get wporigem() : any {
         return this.destinos.find((e) => {
             return e.tipoRota_Id == 1;
         })
     }
 
-    get wpdestino() {
+    get wpdestino() : any {
         return this.destinos.find((e) => {
             return e.tipoRota_Id == 2;
         })
@@ -173,5 +191,5 @@ export class TravelDetailComponent implements OnInit {
         })
     }
 
-    
+
 }

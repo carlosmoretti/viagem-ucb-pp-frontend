@@ -7,7 +7,7 @@
 </nav>
 <div class="smallsize">CRIE SUA VIAGEM</div>
 <div class="alert" *ngIf="retornoTipo && retornoMensagem" [ngClass]="{ 'alert-danger' : retornoTipo == 'erro', 'alert-success' : retornoTipo == 'sucesso' }">
-    {{retornoMensagem}}
+    {{retornoMensagem.text}} <span [routerLink]="retornoMensagem.action.route">[{{retornoMensagem.action.text}}]</span>
 </div>
 <div class="row mt-4">
     <div class="col-sm-6">
@@ -63,13 +63,13 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-3">
+    <!-- <div class="col-sm-3">
         <label>ORÇAMENTO ESTIPULADO</label>
         <input [(ngModel)]="orcamento" [ngClass]="{ 'is-invalid' : !orcamento && validateFields }" type="number" min="0.00" max="10000.00" class="form-control form-control-sm" />
         <div class="invalid-feedback" *ngIf="!orcamento && validateFields">
             O orçamento estipulado para essa viagem deve ser preenchido.
         </div>
-    </div>
+    </div> -->
     <div class="col-sm-3">
         <label>DATA DE PARTIDA</label>
         <input [(ngModel)]="dataPartida" [ngClass]="{ 'is-invalid' : !dataPartida && validateFields }" type="date" class="form-control form-control-sm" />
@@ -124,8 +124,8 @@
     <thead>
         <tr>
             <th>Local</th>
-            <th>Lat</th>
-            <th>Long</th>
+            <th>Prev. Chegada</th>
+            <th>Prev. Saída</th>
             <th></th>
             <th></th>
         </tr>
@@ -137,14 +137,9 @@
             </td>
         </tr> -->
         <tr *ngIf="wporigem">
-            <td>
+            <td colspan="5">
                 <div class="badge badge-success">SAÍDA</div>
                 {{wporigem.endereco}} — {{wporigem.uf}}
-            </td>
-            <td>{{(wporigem.coords | async)?.lat}}</td>
-            <td>{{(wporigem.coords | async)?.lng}}</td>
-            <td></td>
-            <td>
             </td>
         </tr>
         <tr *ngFor="let item of wps; let i = index">
@@ -154,8 +149,12 @@
                 <div class="badge badge-success" *ngIf="item.tipoRota_Id == 2">CHEGADA</div>
                 {{item.endereco}} — {{item.uf}}
             </td>
-            <td>{{(item.coords | async)?.lat}}</td>
-            <td>{{(item.coords | async)?.lng}}</td>
+            <td>
+              <input [(ngModel)]="item.dataInicio" type="date" class="form-control form-control-sm" />
+            </td>
+            <td>
+              <input [(ngModel)]="item.dataFim" type="date" class="form-control form-control-sm" />
+            </td>
             <td><span *ngIf="item.distance">Média de {{(item.distance / 3600).toFixed(0)}} horas de viagem.</span></td>
             <td>
                 <div class="float-right d-flex">
@@ -164,18 +163,13 @@
             </td>
         </tr>
         <tr *ngIf="wpdestino">
-            <td>
+            <td colspan="5">
                 <div class="badge badge-success">CHEGADA</div>
                 {{wpdestino.endereco}} — {{wpdestino.uf}}
             </td>
-            <td>{{(wpdestino.coords | async)?.lat}}</td>
-            <td>{{(wpdestino.coords | async)?.lng}}</td>
-            <td></td>
-            <td>
-            </td>
         </tr>
         <!-- <tr *ngIf="retorno">
-            
+
         </tr> -->
     </tbody>
 </table>
