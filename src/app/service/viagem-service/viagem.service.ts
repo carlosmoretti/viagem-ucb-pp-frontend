@@ -18,7 +18,15 @@ export class ViagemService {
         return this.http.post(environment.API_URL + "viagem", obj);
     }
 
+    put(obj) {
+      return this.http.put(environment.API_URL + "viagem", obj);
+  }
+
     delete(id) {
         return this.http.delete(environment.API_URL + "viagem/" + id);
+    }
+
+    get(id) {
+      return this.http.get(environment.API_URL + "viagem/" + id);
     }
 }

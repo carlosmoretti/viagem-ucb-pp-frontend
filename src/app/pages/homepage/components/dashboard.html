@@ -48,7 +48,8 @@
                         <div class="card-content">PERÍODO</div>
                         <span>{{item.inicio | date: 'dd/MM/yyyy'}} até {{item.fim | date: 'dd/MM/yyyy'}}</span>
                     </div>
-                    <button class="btn btn-sm btn-danger" routerLink="/home/timeline">OCORRÊNCIAS</button>
+                    <button class="btn btn-sm btn-info mr-1" routerLink="/home/timeline">VISUALIZAR</button>
+                    <button class="btn btn-sm btn-warning" [routerLink]="[ '/home', 'travel', 'edit', item.id ]">EDITAR</button>
                 </div>
             </div>
         </div>

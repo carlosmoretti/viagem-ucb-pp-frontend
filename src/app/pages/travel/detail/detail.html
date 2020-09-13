@@ -2,10 +2,10 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#" routerLink="/home/dashboard">Início</a></li>
         <li class="breadcrumb-item active" aria-current="page">Viagem</li>
-        <li class="breadcrumb-item active" aria-current="page">Cadastrar</li>
+        <li class="breadcrumb-item active" aria-current="page">{{pageType}}</li>
     </ol>
 </nav>
-<div class="smallsize">CRIE SUA VIAGEM</div>
+<div class="smallsize text-uppercase">{{pageType}}</div>
 <div class="alert" *ngIf="retornoTipo && retornoMensagem" [ngClass]="{ 'alert-danger' : retornoTipo == 'erro', 'alert-success' : retornoTipo == 'sucesso' }">
     {{retornoMensagem.text}} <span [routerLink]="retornoMensagem.action.route">[{{retornoMensagem.action.text}}]</span>
 </div>

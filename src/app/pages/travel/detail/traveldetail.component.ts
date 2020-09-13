@@ -1,9 +1,10 @@
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, ActivatedRouteSnapshot, ChildActivationStart } from '@angular/router';
 import { Component, OnInit } from '@angular/core'
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ViagemService } from 'src/app/service/viagem-service/viagem.service';
 import { MapsService } from 'src/app/service/maps-service/maps.service';
 import { switchMap, map } from 'rxjs/operators';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
     templateUrl: "detail.html",
@@ -31,18 +32,50 @@ export class TravelDetailComponent implements OnInit {
     retornoTipo: string;
     retornoMensagem: any;
 
+    isEdit = false;
+
     private form: FormGroup;
 
     /**
      *
      */
-    constructor(private fb: FormBuilder, private service: ViagemService, private maps: MapsService, private router: Router) {
+    constructor(private fb: FormBuilder, private service: ViagemService, private maps: MapsService, private router: Router, private route: ActivatedRoute) {
     }
 
     ngOnInit() {
+      this.ifEdit();
     }
 
-    adicionarDestino(endereco, uf) {
+    ifEdit() {
+      if(this.route.snapshot.params.id) {
+        this.isEdit = true;
+
+        this.service.get(this.route.snapshot.params.id)
+          .subscribe((x: any) => {
+
+            this.saida = x.rotas.find((e) => e.tipoRota_Id == 1).endereco;
+            this.saidaUf = x.rotas.find((e) => e.tipoRota_Id == 1).uf;
+            this.retorno = x.rotas.find((e) => e.tipoRota_Id == 2).endereco;
+            this.retornoUf = x.rotas.find((e) => e.tipoRota_Id == 2).uf
+
+            this.dataPartida = new Date(x.inicio).toISOString().split("T")[0]
+            this.dataRetorno = new Date(x.fim).toISOString().split("T")[0]
+
+            this.definirOrigemDestino(x.rotas.find((e) => e.tipoRota_Id == 1).endereco,
+              x.rotas.find((e) => e.tipoRota_Id == 1).uf,
+              x.rotas.find((e) => e.tipoRota_Id == 2).endereco,
+              x.rotas.find((e) => e.tipoRota_Id == 2).uf)
+
+            for(let item of x.rotas.filter((x => x.tipoRota_Id !== 1 && x.tipoRota_Id !== 2))) {
+              this.adicionarDestino(item.endereco, item.uf, new Date(item.dataInicio).toISOString().split("T")[0], new Date(item.dataFim).toISOString().split("T")[0]);
+            }
+
+            console.log(x);
+          })
+      }
+    }
+
+    adicionarDestino(endereco, uf, dataInicio?: string, dataFim?: string) {
         if(endereco  && uf && uf.length == 2) {
 
             var tmp = {
@@ -51,6 +84,11 @@ export class TravelDetailComponent implements OnInit {
                 coords: this.getRoute(endereco, uf),
                 distance: null,
             };
+
+            if(dataInicio && dataFim) {
+              tmp["dataInicio"] = dataInicio;
+              tmp["dataFim"] = dataFim;
+            }
 
             var it: any;
             var total = this.destinos.filter((e) => {
@@ -115,9 +153,30 @@ export class TravelDetailComponent implements OnInit {
 
     salvar() {
         if(this.saida && this.saidaUf && this.retorno && this.retornoUf && this.dataPartida && this.dataRetorno && this.saidaUf.length == 2 && this.retornoUf.length == 2) {
-
             var clone = JSON.parse(JSON.stringify(this.destinos));
-            this.service.post({
+
+            if(this.isEdit) {
+              this.service.put({
+                rotas: clone,
+                inicio: this.dataPartida,
+                fim: this.dataRetorno,
+                id: this.route.snapshot.params.id
+            }).subscribe(d=> {
+                this.retornoTipo = "sucesso";
+                this.retornoMensagem = {
+                  text: "A sua viagem foi alterada com sucesso.",
+                  action: {
+                    text: "Voltar",
+                    route: ['/home']
+                  }
+                }
+                this.clearFields();
+            }, err => {
+                this.retornoTipo = "erro";
+                this.retornoMensagem = "Não foi possível cadastrar essa viagem. Verifique se alguma informação ficou pendente!"
+            })
+            } else {
+              this.service.post({
                 rotas: clone,
                 inicio: this.dataPartida,
                 fim: this.dataRetorno
@@ -135,6 +194,7 @@ export class TravelDetailComponent implements OnInit {
                 this.retornoTipo = "erro";
                 this.retornoMensagem = "Não foi possível cadastrar essa viagem. Verifique se alguma informação ficou pendente!"
             })
+            }
         }
     }
 
@@ -189,6 +249,10 @@ export class TravelDetailComponent implements OnInit {
         return this.destinos.filter((e) => {
             return e.tipoRota_Id == null;
         })
+    }
+
+    get pageType() {
+      return this.route.snapshot.data.titulo;
     }
 
 
