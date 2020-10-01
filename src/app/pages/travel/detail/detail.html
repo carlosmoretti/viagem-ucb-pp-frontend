@@ -5,11 +5,18 @@
         <li class="breadcrumb-item active" aria-current="page">{{pageType}}</li>
     </ol>
 </nav>
-<div class="smallsize text-uppercase">{{pageType}}</div>
+<div class="my-3" *ngIf="isEdit">
+  <button class="btn btn-sm btn-dark" (click)="toggleAtividades = !toggleAtividades"><i class="fas fa-calendar-check"></i> Adicionar Atividade</button>
+</div>
+<app-atividade [viagemId]="id" *ngIf="toggleAtividades && isEdit"></app-atividade>
+
+<div *ngIf="!toggleAtividades">
+  <div class="smallsize text-uppercase">{{pageType}}</div>
 <div class="alert" *ngIf="retornoTipo && retornoMensagem" [ngClass]="{ 'alert-danger' : retornoTipo == 'erro', 'alert-success' : retornoTipo == 'sucesso' }">
     {{retornoMensagem.text}} <span [routerLink]="retornoMensagem.action.route">[{{retornoMensagem.action.text}}]</span>
 </div>
-<div class="row mt-4">
+
+<div class="row mt-4" >
     <div class="col-sm-6">
         <div class="d-flex">
             <div class="form-group w-75 mr-2">
@@ -150,10 +157,10 @@
                 {{item.endereco}} — {{item.uf}}
             </td>
             <td>
-              <input [(ngModel)]="item.dataInicio" type="date" class="form-control form-control-sm" />
+              <input [(ngModel)]="item.dataInicio" type="date" class="form-control form-control-sm" (change)="validaDatas(item.dataInicio, item.dataFim, 'inicio', i)" />
             </td>
             <td>
-              <input [(ngModel)]="item.dataFim" type="date" class="form-control form-control-sm" />
+              <input [(ngModel)]="item.dataFim" type="date" class="form-control form-control-sm" (change)="validaDatas(item.dataInicio, item.dataFim, 'fim', i)"/>
             </td>
             <td><span *ngIf="item.distance">Média de {{(item.distance / 3600).toFixed(0)}} horas de viagem.</span></td>
             <td>
@@ -172,5 +179,10 @@
 
         </tr> -->
     </tbody>
-</table>
-<button class="btn btn-sm btn-success float-right" (click)="validateFields = true; salvar()">Salvar Viagem</button>
+  </table>
+  <button class="btn btn-sm btn-success float-right" (click)="validateFields = true; salvar()">Salvar Viagem</button>
+</div>
+
+<div *ngFor="let item of atividades">
+  Teste
+</div>

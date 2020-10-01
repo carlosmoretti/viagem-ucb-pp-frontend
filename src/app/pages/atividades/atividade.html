@@ -1,0 +1,28 @@
+<div class="card mb-3">
+  <div class="card-header">Cadastrar Atividade</div>
+  <div class="card-body">
+    <form [formGroup]="formulario">
+      <div class="form-group">
+        <label class="required">Título</label>
+        <input type="text" class="form-control form-control-sm" formControlName="descricao"/>
+        <div class="alert alert-danger mt-1" *ngIf="formulario.controls.descricao.errors && checked">Campo obrigatório.</div>
+      </div>
+      <div class="form-group">
+        <label class="required">Valor</label>
+        <input type="number" min="1" step="any" class="form-control form-control-sm" formControlName="valor"/>
+        <div class="alert alert-danger mt-1" *ngIf="formulario.controls.valor.errors && checked">Campo obrigatório.</div>
+      </div>
+      <div class="form-group">
+        <label class="required">Data</label>
+        <input type="date" min="1" step="any" class="form-control form-control-sm" formControlName="data"/>
+        <div class="alert alert-danger mt-1" *ngIf="formulario.controls.data.errors && checked">Campo obrigatório.</div>
+      </div>
+      <div class="form-group">
+        <label class="required">Comentário</label>
+        <textarea type="text" min="1" step="any" class="form-control form-control-sm" formControlName="comentario"></textarea>
+        <div class="alert alert-danger mt-1" *ngIf="formulario.controls.comentario.errors && checked">Campo obrigatório.</div>
+      </div>
+      <button class="btn btn-sm btn-success" (click)="salvarAtividade()">Salvar</button>
+    </form>
+  </div>
+</div>

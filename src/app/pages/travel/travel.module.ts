@@ -1,3 +1,5 @@
+import { AtividadeService } from './../../service/atividade-service/atividade.service';
+import { AtividadeComponent } from './../atividades/atividade.component';
 import { TravelEditResolver } from './../../resolvers/travel/travel.edit.resolver';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, ActivatedRouteSnapshot } from '@angular/router';
@@ -28,10 +30,14 @@ let routes: Routes = [
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
     ],
     declarations: [
-        TravelDetailComponent
+        TravelDetailComponent,
+        AtividadeComponent
+    ],
+    providers: [
+      AtividadeService
     ]
 })
 export class TravelModule {

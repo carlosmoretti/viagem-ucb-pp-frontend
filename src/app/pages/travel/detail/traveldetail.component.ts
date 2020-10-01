@@ -1,16 +1,21 @@
+import { AtividadeService } from './../../../service/atividade-service/atividade.service';
+import { AtividadeStore } from './../../../store/atividades.store';
 import { Router, ActivatedRoute, ActivatedRouteSnapshot, ChildActivationStart } from '@angular/router';
 import { Component, OnInit } from '@angular/core'
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ViagemService } from 'src/app/service/viagem-service/viagem.service';
 import { MapsService } from 'src/app/service/maps-service/maps.service';
 import { switchMap, map } from 'rxjs/operators';
-import { ThrowStmt } from '@angular/compiler';
+import { isNgTemplate, ThrowStmt } from '@angular/compiler';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     templateUrl: "detail.html",
     styleUrls: ["detail.css"]
 })
 export class TravelDetailComponent implements OnInit {
+
+    toggleAtividades = false;
 
     saida: String = '';
     saidaUf: String = '';
@@ -34,21 +39,34 @@ export class TravelDetailComponent implements OnInit {
 
     isEdit = false;
 
+    atividades = [];
+
     private form: FormGroup;
 
     /**
      *
      */
-    constructor(private fb: FormBuilder, private service: ViagemService, private maps: MapsService, private router: Router, private route: ActivatedRoute) {
+    constructor(private fb: FormBuilder, private service: ViagemService, private maps: MapsService, private router: Router,
+      private route: ActivatedRoute, private toastr: ToastrService, private store: AtividadeStore, private atividadeService: AtividadeService) {
     }
 
     ngOnInit() {
+      this.atividades = this.store.atividades;
       this.ifEdit();
+    }
+
+    get id() {
+      return this.route.snapshot.params.id;
     }
 
     ifEdit() {
       if(this.route.snapshot.params.id) {
         this.isEdit = true;
+
+        this.atividadeService.getAll(this.route.snapshot.params.id)
+          .subscribe((d: Array<any>) => {
+            this.atividades = d;
+          })
 
         this.service.get(this.route.snapshot.params.id)
           .subscribe((x: any) => {
@@ -75,9 +93,43 @@ export class TravelDetailComponent implements OnInit {
       }
     }
 
+    validaDatas(data, dataFim, tipo, index) {
+      let destinosMeio = this.destinos.filter((e) => e.tipoRota_Id != 2);
+      let obj = destinosMeio[index === 0 ? 0 : index];
+
+      if(data != null && dataFim != null) {
+        if(new Date(data) > new Date(dataFim) || new Date(dataFim) < new Date(data)) {
+          this.toastr.error('Datas inválidas. Favor conferir o preenchimento!')
+          this.wps[index].dataInicio = null;
+          this.wps[index].dataFim = null;
+          return;
+        }
+        data = this.toDate(data);
+        dataFim = this.toDate(dataFim);
+
+        if(destinosMeio.length > 0) {
+          let inicio = new Date(data);
+          let fim = new Date(dataFim);
+          if(inicio < new Date(obj.dataFim ?? this.toDate(this.dataPartida)) || inicio < new Date(this.toDate(this.dataPartida))
+            || fim > new Date(this.toDate(this.dataRetorno))
+            || inicio > new Date(this.toDate(this.dataRetorno)))
+          {
+            this.toastr.error("Datas inválidas. Favor conferir o preenchimento!")
+            this.wps[index].dataInicio = null;
+            this.wps[index].dataFim = null;
+            return;
+          }
+        }
+      }
+    }
+
+    toDate(data) {
+      let tmp = data.split("-");
+      return `${tmp[0]}/${tmp[1]}/${tmp[2]}`
+    }
+
     adicionarDestino(endereco, uf, dataInicio?: string, dataFim?: string) {
         if(endereco  && uf && uf.length == 2) {
-
             var tmp = {
                 endereco: endereco,
                 uf: uf,
@@ -116,6 +168,8 @@ export class TravelDetailComponent implements OnInit {
 
     definirOrigemDestino(origem, origemuf, destino, destinouf) {
         if(this.saida && this.saidaUf && this.retorno && this.retornoUf && this.dataPartida && this.dataRetorno && this.saidaUf.length == 2 && this.retornoUf.length == 2) {
+
+            if(this.dataPartida )
 
             if(this.wporigem != null) {
                 this.destinos = this.destinos.filter((e) => e.tipoRota_Id != 1);
@@ -163,6 +217,8 @@ export class TravelDetailComponent implements OnInit {
                 id: this.route.snapshot.params.id
             }).subscribe(d=> {
                 this.retornoTipo = "sucesso";
+                this.toastr.success("Sua viagem foi editada com sucesso na aplicação.");
+                this.router.navigate(['home', 'dashboard']);
                 this.retornoMensagem = {
                   text: "A sua viagem foi alterada com sucesso.",
                   action: {
@@ -182,6 +238,8 @@ export class TravelDetailComponent implements OnInit {
                 fim: this.dataRetorno
             }).subscribe(d=> {
                 this.retornoTipo = "sucesso";
+                this.toastr.success("Sua viagem foi cadastrada com sucesso na aplicação.");
+                this.router.navigate(['home', 'dashboard']);
                 this.retornoMensagem = {
                   text: "A sua viagem foi cadastrada com sucesso.",
                   action: {
