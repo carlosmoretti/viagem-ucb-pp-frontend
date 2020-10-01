@@ -18,6 +18,10 @@ export class AtividadeComponent implements OnInit{
   formulario: FormGroup;
   checked = false;
 
+  recarregando: boolean;
+
+  atividades = [];
+
   ngOnInit() {
     this.formulario = this.fb.group({
       descricao: ['', Validators.required],
@@ -27,6 +31,26 @@ export class AtividadeComponent implements OnInit{
       viagem_Id: [''],
       coordenadas: ['']
     });
+
+    this.buscarAtividade();
+  }
+
+  buscarAtividade() {
+    this.recarregando = true;
+    this.service.getAll(this.viagemId)
+      .subscribe((d: Array<any>) => {
+        this.atividades = d;
+        this.recarregando = false;
+      })
+  }
+
+  remover(id, index) {
+    this.atividades.splice(index, 1);
+    this.service.remove(id)
+      .subscribe(d=> {
+        this.toastr.info("Esta atividade foi removida com sucesso.");
+        this.buscarAtividade();
+      })
   }
 
   salvarAtividade() {
@@ -42,13 +66,12 @@ export class AtividadeComponent implements OnInit{
           this.formulario.reset();
           this.checked = false;
 
-          this.service.getAll(this.viagemId)
-            .subscribe((x: Array<any>) => {
-              console.log(x);
-              this.store.atividades = x;
-            });
+          this.buscarAtividade();
         })
     }
+  }
 
+  get total() {
+    return this.atividades.map((e) => e.valor).reduce((a, b) => a + b, 0);
   }
 }

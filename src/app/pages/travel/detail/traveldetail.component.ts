@@ -63,11 +63,6 @@ export class TravelDetailComponent implements OnInit {
       if(this.route.snapshot.params.id) {
         this.isEdit = true;
 
-        this.atividadeService.getAll(this.route.snapshot.params.id)
-          .subscribe((d: Array<any>) => {
-            this.atividades = d;
-          })
-
         this.service.get(this.route.snapshot.params.id)
           .subscribe((x: any) => {
 

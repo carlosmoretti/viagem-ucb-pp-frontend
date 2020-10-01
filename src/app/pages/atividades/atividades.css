@@ -1,0 +1,16 @@
+.bg-card {
+  background-color: #c0392b;
+  color: #FFF;
+}
+
+.bg-comment {
+  background-color: #e74c3c;
+}
+
+.total {
+  color: #c0392b;
+}
+
+.total .value {
+  font-size: 2rem;
+}

@@ -6,7 +6,7 @@
     </ol>
 </nav>
 <div class="my-3" *ngIf="isEdit">
-  <button class="btn btn-sm btn-dark" (click)="toggleAtividades = !toggleAtividades"><i class="fas fa-calendar-check"></i> Adicionar Atividade</button>
+  <button class="btn btn-sm btn-dark" (click)="toggleAtividades = !toggleAtividades"><i class="fas fa-calendar-check"></i> Atividades</button>
 </div>
 <app-atividade [viagemId]="id" *ngIf="toggleAtividades && isEdit"></app-atividade>
 
@@ -181,8 +181,4 @@
     </tbody>
   </table>
   <button class="btn btn-sm btn-success float-right" (click)="validateFields = true; salvar()">Salvar Viagem</button>
-</div>
-
-<div *ngFor="let item of atividades">
-  Teste
 </div>

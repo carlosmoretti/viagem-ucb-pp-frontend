@@ -21,4 +21,9 @@ export class AtividadeService {
     return this.http.get(environment.API_URL + "/atividade/" + viagemId)
       .pipe(take(1));
   }
+
+  remove(id) {
+    return this.http.delete(environment.API_URL + "/atividade/" + id)
+      .pipe(take(1));
+  }
 }
