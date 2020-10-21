@@ -15,7 +15,8 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class TravelDetailComponent implements OnInit {
 
-    toggleAtividades = false;
+
+    currentAction = 0;
 
     saida: String = '';
     saidaUf: String = '';

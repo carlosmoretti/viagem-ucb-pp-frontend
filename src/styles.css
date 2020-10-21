@@ -1,7 +1,7 @@
 body {
     font-family: 'Montserrat', sans-serif;
     font-size: 0.8rem;
-} 
+}
 
 body,html {
     height: 100%;
@@ -16,7 +16,7 @@ body,html {
     -webkit-box-shadow: 0px 4px 0px 0px rgba(0,0,0,0.16);
     -moz-box-shadow: 0px 4px 0px 0px rgba(0,0,0,0.16);
     box-shadow: 0px 4px 0px 0px rgba(0,0,0,0.16);
-}  
+}
 
 
 .breadcrumb {
@@ -34,4 +34,8 @@ tr[ng-reflect-router-link] {
 .required::after {
     content: "*";
     color: red;
+}
+
+.container {
+  max-width: 1300px !important;
 }

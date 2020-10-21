@@ -1,184 +1,200 @@
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#" routerLink="/home/dashboard">Início</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Viagem</li>
-        <li class="breadcrumb-item active" aria-current="page">{{pageType}}</li>
-    </ol>
-</nav>
-<div class="my-3" *ngIf="isEdit">
-  <button class="btn btn-sm btn-dark" (click)="toggleAtividades = !toggleAtividades"><i class="fas fa-calendar-check"></i> Atividades</button>
-</div>
-<app-atividade [viagemId]="id" *ngIf="toggleAtividades && isEdit"></app-atividade>
+<div class="row">
+  <div class="col-sm-2">
+    <div class="mb-1" *ngIf="isEdit">
+      <button class="btn btn-sm w-100" [ngClass]="{ 'btn-success' : currentAction == 0 }" (click)="currentAction = 0"><i class="fas fa-calendar-check"></i> Viagem </button>
+    </div>
+    <div class="mb-1" *ngIf="isEdit">
+      <button class="btn btn-sm w-100" (click)="currentAction = 1" [ngClass]="{ 'btn-success' : currentAction == 1 }"><i class="fas fa-calendar-check"></i> Atividades</button>
+    </div>
+    <div class="mb-1" *ngIf="isEdit">
+      <button class="btn btn-sm w-100" (click)="currentAction = 2" [ngClass]="{ 'btn-success' : currentAction == 2 }"><i class="fas fa-calendar-check"></i> Hospedagens</button>
+    </div>
+  </div>
+  <div class="col-sm-10">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#" routerLink="/home/dashboard">Início</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Viagem</li>
+          <li class="breadcrumb-item active" aria-current="page">{{pageType}}</li>
+      </ol>
+  </nav>
 
-<div *ngIf="!toggleAtividades">
-  <div class="smallsize text-uppercase">{{pageType}}</div>
-<div class="alert" *ngIf="retornoTipo && retornoMensagem" [ngClass]="{ 'alert-danger' : retornoTipo == 'erro', 'alert-success' : retornoTipo == 'sucesso' }">
-    {{retornoMensagem.text}} <span [routerLink]="retornoMensagem.action.route">[{{retornoMensagem.action.text}}]</span>
-</div>
 
-<div class="row mt-4" >
-    <div class="col-sm-6">
-        <div class="d-flex">
-            <div class="form-group w-75 mr-2">
-                <label>ENDEREÇO DE PARTIDA</label>
-                <input type="text" class="form-control form-control-sm" [ngClass]="{ 'is-invalid': (saida.length > 50 || !saida) && validateFields }" [(ngModel)]="saida"/>
-                <div class="invalid-feedback" *ngIf="saida.length > 50">
-                    O endereço de partida não pode possuir mais de 50 caracteres.
-                </div>
-                <div class="invalid-feedback" *ngIf="!saida">
-                    O endereço de partida deve ser preenchido.
-                </div>
-            </div>
-            <div class="form-group w-25">
-                <label>UF</label>
-                <input type="text" class="form-control form-control-sm" [ngClass]="{ 'is-invalid': saidaUf.length != 2 && validateFields }" [(ngModel)]="saidaUf"/>
-                <div class="invalid-feedback" *ngIf="saidaUf.length > 2">
-                    A UF não pode conter mais que 2 caracteres.
-                </div>
-                <div class="invalid-feedback" *ngIf="!saidaUf">
-                    A UF deve ser preenchida.
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6">
-        <div class="d-flex">
-            <div class="form-group mr-2">
-                <div class="d-flex">
-                    <label>ENDEREÇO DE RETORNO</label>
-                    <a [routerLink]="" class="ml-auto" (click)="retorno = saida; retornoUf = saidaUf">[Mesmo endereço de partida]</a>
-                </div>
-                <input type="text" class="form-control form-control-sm" [ngClass]="{ 'is-invalid': (retorno.length > 50 || !retorno) && validateFields }" [(ngModel)]="retorno"/>
-                <div class="invalid-feedback" *ngIf="retorno.length > 50">
-                    O endereço de retorno não pode possuir mais de 50 caracteres.
-                </div>
-                <div class="invalid-feedback" *ngIf="!retorno">
-                    O endereço de retorno deve ser preenchido.
-                </div>
-            </div>
-            <div class="form-group w-25">
-                <div class="d-flex">
-                    <label>UF</label>
-                </div>
-                <input type="text" class="form-control form-control-sm" [ngClass]="{ 'is-invalid': retornoUf.length != 2 && validateFields }" [(ngModel)]="retornoUf"/>
-                <div class="invalid-feedback" *ngIf="retornoUf.length > 2">
-                    A UF não pode conter mais que 2 caracteres.
-                </div>
-                <div class="invalid-feedback" *ngIf="!retornoUf">
-                    A UF deve ser preenchida.
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- <div class="col-sm-3">
-        <label>ORÇAMENTO ESTIPULADO</label>
-        <input [(ngModel)]="orcamento" [ngClass]="{ 'is-invalid' : !orcamento && validateFields }" type="number" min="0.00" max="10000.00" class="form-control form-control-sm" />
-        <div class="invalid-feedback" *ngIf="!orcamento && validateFields">
-            O orçamento estipulado para essa viagem deve ser preenchido.
-        </div>
-    </div> -->
-    <div class="col-sm-3">
-        <label>DATA DE PARTIDA</label>
-        <input [(ngModel)]="dataPartida" [ngClass]="{ 'is-invalid' : !dataPartida && validateFields }" type="date" class="form-control form-control-sm" />
-        <div class="invalid-feedback" *ngIf="!dataPartida && validateFields">
-            Você deve preencher uma data de partida.
-        </div>
-    </div>
-    <div class="col-sm-3">
-        <label>DATA DE RETORNO</label>
-        <input [(ngModel)]="dataRetorno" [ngClass]="{ 'is-invalid' : !dataRetorno && validateFields }" type="date" class="form-control form-control-sm" />
-        <div class="invalid-feedback" *ngIf="!dataRetorno && validateFields">
-            Você deve preencher uma data de retorno.
-        </div>
-    </div>
-    <div class="col-sm-3">
-        <button class="btn btn-sm btn-info mt-4" (click)="validateFields = true; definirOrigemDestino(saida, saidaUf, retorno, retornoUf)">Salvar</button>
-    </div>
-</div>
-<hr />
-<div class="d-flex">
-    <div class="smallsize mb-3">DESTINOS ({{destinos.length}})</div>
-    <a [routerLink]="" (click)="addVisible = !addVisible" class="ml-auto">
-        {{addVisible ? 'Esconder' : 'Mostrar'}} inclusão de destino
-    </a>
-</div>
-<div class="row" *ngIf="addVisible">
-    <div class="col-sm-12">
-        <div class="d-flex">
-            <div class="w-75 mr-2">
-                <div class="form-group">
-                    <label>ENDEREÇO DESTINO</label>
-                    <div class="d-flex">
-                        <input #destino type="text" class="form-control form-control-sm" placeholder="Insira o endereço de destino a ser adicionado"/>
-                    </div>
-                </div>
-            </div>
-            <div class="w-25">
-                <div class="form-group">
-                    <label>UF</label>
-                    <div class="d-flex">
-                        <input #uf type="text" class="form-control form-control-sm" placeholder="UF"/>
-                        <button class="btn btn-sm btn-success rounded-0" (click)="adicionarDestino(destino.value, uf.value); destino.value = ''; uf.value = '';">Adicionar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="alert alert-danger" *ngIf="!destino.value && !uf.value">Os campos são obrigatórios!</div>
-        <div class="alert alert-danger" *ngIf="uf.value.length != 2">UF deve possuir no máximo 2 caracteres.</div>
-    </div>
-</div>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Local</th>
-            <th>Prev. Chegada</th>
-            <th>Prev. Saída</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- <tr *ngIf="saida">
-            <td colspan="4">
-                <div class="badge badge-success">SAÍDA</div> {{saida}} — {{saidaUf}}
-            </td>
-        </tr> -->
-        <tr *ngIf="wporigem">
-            <td colspan="5">
-                <div class="badge badge-success">SAÍDA</div>
-                {{wporigem.endereco}} — {{wporigem.uf}}
-            </td>
-        </tr>
-        <tr *ngFor="let item of wps; let i = index">
-            <td>
-                <div class="badge badge-info" *ngIf="item.tipoRota_Id == null"><i class="fas fa-arrow-down"></i> PRÓXIMO DESTINO</div>
-                <div class="badge badge-success" *ngIf="item.tipoRota_Id == 1">SAÍDA</div>
-                <div class="badge badge-success" *ngIf="item.tipoRota_Id == 2">CHEGADA</div>
-                {{item.endereco}} — {{item.uf}}
-            </td>
-            <td>
-              <input [(ngModel)]="item.dataInicio" type="date" class="form-control form-control-sm" (change)="validaDatas(item.dataInicio, item.dataFim, 'inicio', i)" />
-            </td>
-            <td>
-              <input [(ngModel)]="item.dataFim" type="date" class="form-control form-control-sm" (change)="validaDatas(item.dataInicio, item.dataFim, 'fim', i)"/>
-            </td>
-            <td><span *ngIf="item.distance">Média de {{(item.distance / 3600).toFixed(0)}} horas de viagem.</span></td>
-            <td>
-                <div class="float-right d-flex">
-                    <button class="btn btn-sm btn-danger"  *ngIf="item.tipoRota_Id == null" (click)="removerDestino(item)">Remover</button>
-                </div>
-            </td>
-        </tr>
-        <tr *ngIf="wpdestino">
-            <td colspan="5">
-                <div class="badge badge-success">CHEGADA</div>
-                {{wpdestino.endereco}} — {{wpdestino.uf}}
-            </td>
-        </tr>
-        <!-- <tr *ngIf="retorno">
+  <app-atividade [viagemId]="id" *ngIf="currentAction == 1 && isEdit"></app-atividade>
+  <app-hospedagem *ngIf="currentAction == 2 && isEdit"></app-hospedagem>
 
-        </tr> -->
-    </tbody>
-  </table>
-  <button class="btn btn-sm btn-success float-right" (click)="validateFields = true; salvar()">Salvar Viagem</button>
+  <div *ngIf="currentAction == 0">
+    <div class="smallsize text-uppercase">{{pageType}}</div>
+  <div class="alert" *ngIf="retornoTipo && retornoMensagem" [ngClass]="{ 'alert-danger' : retornoTipo == 'erro', 'alert-success' : retornoTipo == 'sucesso' }">
+      {{retornoMensagem.text}} <span [routerLink]="retornoMensagem.action.route">[{{retornoMensagem.action.text}}]</span>
+  </div>
+
+  <div class="row mt-4" *ngIf="currentAction == 0">
+      <div class="col-sm-6">
+          <div class="d-flex">
+              <div class="form-group w-75 mr-2">
+                  <label>ENDEREÇO DE PARTIDA</label>
+                  <input type="text" class="form-control form-control-sm" [ngClass]="{ 'is-invalid': (saida.length > 50 || !saida) && validateFields }" [(ngModel)]="saida"/>
+                  <div class="invalid-feedback" *ngIf="saida.length > 50">
+                      O endereço de partida não pode possuir mais de 50 caracteres.
+                  </div>
+                  <div class="invalid-feedback" *ngIf="!saida">
+                      O endereço de partida deve ser preenchido.
+                  </div>
+              </div>
+              <div class="form-group w-25">
+                  <label>UF</label>
+                  <input type="text" class="form-control form-control-sm" [ngClass]="{ 'is-invalid': saidaUf.length != 2 && validateFields }" [(ngModel)]="saidaUf"/>
+                  <div class="invalid-feedback" *ngIf="saidaUf.length > 2">
+                      A UF não pode conter mais que 2 caracteres.
+                  </div>
+                  <div class="invalid-feedback" *ngIf="!saidaUf">
+                      A UF deve ser preenchida.
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="col-sm-6">
+          <div class="d-flex">
+              <div class="form-group mr-2">
+                  <div class="d-flex">
+                      <label>ENDEREÇO DE RETORNO</label>
+                      <a [routerLink]="" class="ml-auto" (click)="retorno = saida; retornoUf = saidaUf">[Copiar Partida]</a>
+                  </div>
+                  <input type="text" class="form-control form-control-sm" [ngClass]="{ 'is-invalid': (retorno.length > 50 || !retorno) && validateFields }" [(ngModel)]="retorno"/>
+                  <div class="invalid-feedback" *ngIf="retorno.length > 50">
+                      O endereço de retorno não pode possuir mais de 50 caracteres.
+                  </div>
+                  <div class="invalid-feedback" *ngIf="!retorno">
+                      O endereço de retorno deve ser preenchido.
+                  </div>
+              </div>
+              <div class="form-group w-25">
+                  <div class="d-flex">
+                      <label>UF</label>
+                  </div>
+                  <input type="text" class="form-control form-control-sm" [ngClass]="{ 'is-invalid': retornoUf.length != 2 && validateFields }" [(ngModel)]="retornoUf"/>
+                  <div class="invalid-feedback" *ngIf="retornoUf.length > 2">
+                      A UF não pode conter mais que 2 caracteres.
+                  </div>
+                  <div class="invalid-feedback" *ngIf="!retornoUf">
+                      A UF deve ser preenchida.
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- <div class="col-sm-3">
+          <label>ORÇAMENTO ESTIPULADO</label>
+          <input [(ngModel)]="orcamento" [ngClass]="{ 'is-invalid' : !orcamento && validateFields }" type="number" min="0.00" max="10000.00" class="form-control form-control-sm" />
+          <div class="invalid-feedback" *ngIf="!orcamento && validateFields">
+              O orçamento estipulado para essa viagem deve ser preenchido.
+          </div>
+      </div> -->
+      <div class="col-sm-3">
+          <label>DATA DE PARTIDA</label>
+          <input [(ngModel)]="dataPartida" [ngClass]="{ 'is-invalid' : !dataPartida && validateFields }" type="date" class="form-control form-control-sm" />
+          <div class="invalid-feedback" *ngIf="!dataPartida && validateFields">
+              Você deve preencher uma data de partida.
+          </div>
+      </div>
+      <div class="col-sm-3">
+          <label>DATA DE RETORNO</label>
+          <input [(ngModel)]="dataRetorno" [ngClass]="{ 'is-invalid' : !dataRetorno && validateFields }" type="date" class="form-control form-control-sm" />
+          <div class="invalid-feedback" *ngIf="!dataRetorno && validateFields">
+              Você deve preencher uma data de retorno.
+          </div>
+      </div>
+      <div class="col-sm-3">
+          <button class="btn btn-sm btn-info mt-4" (click)="validateFields = true; definirOrigemDestino(saida, saidaUf, retorno, retornoUf)">Salvar</button>
+      </div>
+  </div>
+  <hr />
+  <div class="d-flex">
+      <div class="smallsize mb-3">DESTINOS ({{destinos.length}})</div>
+      <a [routerLink]="" (click)="addVisible = !addVisible" class="ml-auto">
+          {{addVisible ? 'Esconder' : 'Mostrar'}} inclusão de destino
+      </a>
+  </div>
+  <div class="row" *ngIf="addVisible">
+      <div class="col-sm-12">
+          <div class="d-flex">
+              <div class="w-75 mr-2">
+                  <div class="form-group">
+                      <label>ENDEREÇO DESTINO</label>
+                      <div class="d-flex">
+                          <input #destino type="text" class="form-control form-control-sm" placeholder="Insira o endereço de destino a ser adicionado"/>
+                      </div>
+                  </div>
+              </div>
+              <div class="w-25">
+                  <div class="form-group">
+                      <label>UF</label>
+                      <div class="d-flex">
+                          <input #uf type="text" class="form-control form-control-sm" placeholder="UF"/>
+                          <button class="btn btn-sm btn-success rounded-0" (click)="adicionarDestino(destino.value, uf.value); destino.value = ''; uf.value = '';">Adicionar</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="alert alert-danger" *ngIf="!destino.value && !uf.value">Os campos são obrigatórios!</div>
+          <div class="alert alert-danger" *ngIf="uf.value.length != 2">UF deve possuir no máximo 2 caracteres.</div>
+      </div>
+  </div>
+  <table class="table table-striped">
+      <thead>
+          <tr>
+              <th>Local</th>
+              <th>Prev. Chegada</th>
+              <th>Prev. Saída</th>
+              <th></th>
+              <th></th>
+          </tr>
+      </thead>
+      <tbody>
+          <!-- <tr *ngIf="saida">
+              <td colspan="4">
+                  <div class="badge badge-success">SAÍDA</div> {{saida}} — {{saidaUf}}
+              </td>
+          </tr> -->
+          <tr *ngIf="wporigem">
+              <td colspan="5">
+                  <div class="badge badge-success">SAÍDA</div>
+                  {{wporigem.endereco}} — {{wporigem.uf}}
+              </td>
+          </tr>
+          <tr *ngFor="let item of wps; let i = index">
+              <td>
+                  <div class="badge badge-info" *ngIf="item.tipoRota_Id == null"><i class="fas fa-arrow-down"></i> PRÓXIMO DESTINO</div>
+                  <div class="badge badge-success" *ngIf="item.tipoRota_Id == 1">SAÍDA</div>
+                  <div class="badge badge-success" *ngIf="item.tipoRota_Id == 2">CHEGADA</div>
+                  {{item.endereco}} — {{item.uf}}
+              </td>
+              <td>
+                <input [(ngModel)]="item.dataInicio" type="date" class="form-control form-control-sm" (change)="validaDatas(item.dataInicio, item.dataFim, 'inicio', i)" />
+              </td>
+              <td>
+                <input [(ngModel)]="item.dataFim" type="date" class="form-control form-control-sm" (change)="validaDatas(item.dataInicio, item.dataFim, 'fim', i)"/>
+              </td>
+              <td><span *ngIf="item.distance">+/- {{(item.distance / 3600).toFixed(0)}}h de viagem.</span></td>
+              <td>
+                  <div class="float-right d-flex">
+                      <button class="btn btn-sm btn-danger"  *ngIf="item.tipoRota_Id == null" (click)="removerDestino(item)">Remover</button>
+                  </div>
+              </td>
+          </tr>
+          <tr *ngIf="wpdestino">
+              <td colspan="5">
+                  <div class="badge badge-success">CHEGADA</div>
+                  {{wpdestino.endereco}} — {{wpdestino.uf}}
+              </td>
+          </tr>
+          <!-- <tr *ngIf="retorno">
+
+          </tr> -->
+      </tbody>
+    </table>
+    <button class="btn btn-sm btn-success float-right" (click)="validateFields = true; salvar()">Salvar Viagem</button>
+  </div>
+
+  </div>
 </div>

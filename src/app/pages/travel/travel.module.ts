@@ -1,3 +1,4 @@
+import { HospedagemComponent } from './../hospedagem/hospedagem.component';
 import { AtividadeService } from './../../service/atividade-service/atividade.service';
 import { AtividadeComponent } from './../atividades/atividade.component';
 import { TravelEditResolver } from './../../resolvers/travel/travel.edit.resolver';
@@ -34,7 +35,8 @@ let routes: Routes = [
     ],
     declarations: [
         TravelDetailComponent,
-        AtividadeComponent
+        AtividadeComponent,
+        HospedagemComponent
     ],
     providers: [
       AtividadeService
