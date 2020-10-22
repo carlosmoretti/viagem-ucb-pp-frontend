@@ -1,3 +1,4 @@
+import { ViagemService } from './../../service/viagem-service/viagem.service';
 import { Observable } from 'rxjs';
 import { HospedagemService } from './../../service/hospedagem-service/hospedagem.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -14,17 +15,20 @@ export class HospedagemComponent implements OnInit {
   form: FormGroup;
   savePressed: boolean;
 
+  reloadingHospedagens: boolean;
+
   tipoHospedagens$: Observable<any>;
   hospedagens: Array<any>;
+
+  visibleId: number;
   @Input('viagemId') viagemId: number;
 
-  constructor(private toastr: ToastrService, private fb: FormBuilder, private hospedagemService: HospedagemService) {
+  constructor(private viagem: ViagemService, private toastr: ToastrService, private fb: FormBuilder, private hospedagemService: HospedagemService) {
   }
 
   ngOnInit() {
-
-    this.tipoHospedagens$ = this.hospedagemService.getAll();
     this.obterHospedagens();
+    this.tipoHospedagens$ = this.hospedagemService.getAll();
 
     this.form = this.fb.group({
       nome: ['', Validators.required],
@@ -39,9 +43,20 @@ export class HospedagemComponent implements OnInit {
   }
 
   obterHospedagens() {
-    return this.hospedagemService.getAllHospedagens()
+    this.hospedagemService.get(this.viagemId)
       .subscribe((d: Array<any>) => {
         this.hospedagens = d;
+        this.visibleId = d[d.length-1].id
+      });
+  }
+
+  remover(id) {
+    this.reloadingHospedagens = true;
+    this.hospedagemService.delete(id)
+      .subscribe(d=> {
+        this.toastr.info("Hospedagem removida com sucesso.");
+        this.obterHospedagens();
+        this.reloadingHospedagens = false;
       })
   }
 
@@ -56,8 +71,9 @@ export class HospedagemComponent implements OnInit {
       console.log(this.form.value);
       this.hospedagemService.save(this.form.value)
         .subscribe((d) => {
-          this.toastr.success("A hospedagem foi incluída com sucesso.");
+          this.toastr.info("A hospedagem foi incluída com sucesso.");
           this.form.reset();
+          this.savePressed = false;
           this.obterHospedagens();
         });
     }

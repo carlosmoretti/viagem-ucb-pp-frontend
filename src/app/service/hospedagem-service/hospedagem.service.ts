@@ -12,14 +12,18 @@ export class HospedagemService {
   }
 
   getAll() {
-    return this.http.get(environment.API_URL + "hospedagem/tipohospedagens").pipe(take(1));
+    return this.http.get(environment.API_URL + "Hospedagem/TipoHospedagem").pipe(take(1));
   }
 
   save(obj) {
-    return this.http.post(environment.API_URL + "hospedagem", obj).pipe(take(1));
+    return this.http.post(environment.API_URL + "Hospedagem", obj).pipe(take(1));
   }
 
-  getAllHospedagens() {
-    return this.http.get(environment.API_URL + "hospedagem").pipe(take(1));
+  get(id) {
+    return this.http.get(environment.API_URL + "Hospedagem/viagem/" + id).pipe(take(1));
+  }
+
+  delete(id) {
+    return this.http.delete(environment.API_URL + "Hospedagem/" + id);
   }
 }

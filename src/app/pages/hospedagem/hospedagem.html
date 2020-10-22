@@ -47,13 +47,15 @@
         </form>
         <button (click)="save()" class="btn btn-sm float-right btn-success">Salvar</button>
       </div>
-      <div class="col-sm-6">
+      <div style="overflow-y: hidden" class="col-sm-6">
         <ng-template #carregando>Carregando...</ng-template>
-        <div *ngIf="hospedagens; else carregando">
+        <div *ngIf="hospedagens && !reloadingHospedagens; else carregando">
           <div *ngFor="let item of hospedagens">
             <div class="card mb-2">
-              <div class="card-header">{{item.nome}} {{item.valorTotal | currency: 'BRL'}}</div>
-              <div class="card-body">
+              <div class="card-header" (click)="visibleId = item.id">{{item.nome}}
+                <div (click)="remover(item.id)" class="float-right"><i class="fas fa-trash-alt"></i></div>
+              </div>
+              <div class="card-body" *ngIf="visibleId === item.id">
                 <table class="table table-striped">
                   <tr>
                     <th>Nome</th>
@@ -62,13 +64,13 @@
                   </tr>
                   <tr>
                     <td class="font-weight-bold">{{item.nome}}</td>
-                    <td>{{item.checkin}}</td>
+                    <td>{{item.checkin | date: 'dd/MM/yyyy'}}</td>
                     <td>{{item.valorTotal | currency: 'BRL'}}</td>
                   </tr>
                 </table>
                 <div>"{{item.avaliacao}}"</div>
                 <hr />
-                <p>Endereço:</p>
+                <p class="font-weight-bold">Endereço:</p>
                 {{item.endereco}}
               </div>
             </div>
