@@ -60,11 +60,13 @@
                   <tr>
                     <th>Nome</th>
                     <th>Checkin</th>
+                    <th>Diárias</th>
                     <th>Valor</th>
                   </tr>
                   <tr>
                     <td class="font-weight-bold">{{item.nome}}</td>
                     <td>{{item.checkin | date: 'dd/MM/yyyy'}}</td>
+                    <td>{{item.diarias}}</td>
                     <td>{{item.valorTotal | currency: 'BRL'}}</td>
                   </tr>
                 </table>
