@@ -1,3 +1,4 @@
+import { HospedagemService } from './../../service/hospedagem-service/hospedagem.service';
 import { HospedagemComponent } from './../hospedagem/hospedagem.component';
 import { AtividadeService } from './../../service/atividade-service/atividade.service';
 import { AtividadeComponent } from './../atividades/atividade.component';
@@ -39,7 +40,8 @@ let routes: Routes = [
         HospedagemComponent
     ],
     providers: [
-      AtividadeService
+      AtividadeService,
+      HospedagemService
     ]
 })
 export class TravelModule {

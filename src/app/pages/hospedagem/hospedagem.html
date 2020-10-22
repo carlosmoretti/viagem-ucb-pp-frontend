@@ -1,39 +1,80 @@
+
+
 <div class="card mb-3">
   <div class="card-header">Cadastrar Hospedagem</div>
   <div class="card-body">
-    <form>
-      <div class="form-group">
-        <label>Nome do Hotel</label>
-        <input type="text" class="form-control form-control-sm" />
+    <div class="row">
+      <div class="col-sm-6">
+        <form [formGroup]="form">
+          <div class="form-group">
+            <label>Nome do Hotel</label>
+            <input [ngClass]="{ 'is-invalid': nomeHotel.errors?.required && savePressed, 'is-valid': !nomeHotel.errors && savePressed }" formControlName="nome" type="text" class="form-control form-control-sm" />
+            <div class="invalid-feedback" *ngIf="nomeHotel.errors?.required && savePressed">Este campo é obrigatório!</div>
+          </div>
+          <div class="form-group">
+            <label>Endereço</label>
+            <input [ngClass]="{ 'is-invalid': endereco.errors?.required && savePressed, 'is-valid': !endereco.errors && savePressed }" formControlName="endereco" type="text" class="form-control form-control-sm" />
+            <div class="invalid-feedback" *ngIf="endereco.errors?.required && savePressed">Este campo é obrigatório!</div>
+          </div>
+          <div class="form-group">
+            <label>Tipo de Hospedagem</label>
+            <select [ngClass]="{ 'is-invalid': tipoHospedagem.errors?.required && savePressed, 'is-valid': !tipoHospedagem.errors && savePressed }" formControlName="tipoHospedagem_Id" class="form-control form-control-sm">
+              <option>Selecione...</option>
+              <option *ngFor="let item of tipoHospedagens$ | async" [value]="item.id">{{item.nome}}</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="tipoHospedagem.errors?.required && savePressed">Este campo é obrigatório!</div>
+          </div>
+          <div class="form-group">
+            <label>Check-in</label>
+            <input [ngClass]="{ 'is-invalid': checkin.errors?.required && savePressed, 'is-valid': !checkin.errors && savePressed }" formControlName="checkin" type="date" class="form-control form-control-sm" />
+            <div class="invalid-feedback" *ngIf="checkin.errors?.required && savePressed">Este campo é obrigatório!</div>
+          </div>
+          <div class="form-group">
+            <label>Diárias</label>
+            <input [ngClass]="{ 'is-invalid': diarias.errors?.required && savePressed, 'is-valid': !diarias.errors && savePressed }" formControlName="diarias" type="number" class="form-control form-control-sm" />
+            <div class="invalid-feedback" *ngIf="diarias.errors?.required && savePressed">Este campo é obrigatório!</div>
+          </div>
+          <div class="form-group">
+            <label>Valor Total</label>
+            <input [ngClass]="{ 'is-invalid': valorTotal.errors?.required && savePressed, 'is-valid': !valorTotal.errors && savePressed }" formControlName="valorTotal" type="number" class="form-control form-control-sm" />
+            <div class="invalid-feedback" *ngIf="valorTotal.errors?.required && savePressed">Este campo é obrigatório!</div>
+          </div>
+          <div class="form-group">
+            <label>Avaliação</label>
+            <textarea [ngClass]="{ 'is-invalid': avaliacao.errors?.required && savePressed, 'is-valid': !avaliacao.errors && savePressed }" formControlName="avaliacao" class="form-control form-control-sm"></textarea>
+            <div class="invalid-feedback" *ngIf="avaliacao.errors?.required && savePressed">Este campo é obrigatório!</div>
+          </div>
+        </form>
+        <button (click)="save()" class="btn btn-sm float-right btn-success">Salvar</button>
       </div>
-      <div class="form-group">
-        <label>Endereço</label>
-        <input type="text" class="form-control form-control-sm" />
+      <div class="col-sm-6">
+        <ng-template #carregando>Carregando...</ng-template>
+        <div *ngIf="hospedagens; else carregando">
+          <div *ngFor="let item of hospedagens">
+            <div class="card mb-2">
+              <div class="card-header">{{item.nome}} {{item.valorTotal | currency: 'BRL'}}</div>
+              <div class="card-body">
+                <table class="table table-striped">
+                  <tr>
+                    <th>Nome</th>
+                    <th>Checkin</th>
+                    <th>Valor</th>
+                  </tr>
+                  <tr>
+                    <td class="font-weight-bold">{{item.nome}}</td>
+                    <td>{{item.checkin}}</td>
+                    <td>{{item.valorTotal | currency: 'BRL'}}</td>
+                  </tr>
+                </table>
+                <div>"{{item.avaliacao}}"</div>
+                <hr />
+                <p>Endereço:</p>
+                {{item.endereco}}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Tipo de Hospedagem</label>
-        <select class="form-control form-control-sm">
-          <option>Selecione...</option>
-          <option>Hostel</option>
-          <option>Hotel</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Check-in</label>
-        <input type="date" class="form-control form-control-sm" />
-      </div>
-      <div class="form-group">
-        <label>Diárias</label>
-        <input type="number" class="form-control form-control-sm" />
-      </div>
-      <div class="form-group">
-        <label>Valor Total</label>
-        <input type="number" class="form-control form-control-sm" />
-      </div>
-      <div class="form-group">
-        <label>Avaliação</label>
-        <textarea class="form-control form-control-sm"></textarea>
-      </div>
-    </form>
+    </div>
   </div>
 </div>

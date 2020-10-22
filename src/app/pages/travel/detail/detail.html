@@ -21,7 +21,7 @@
 
 
   <app-atividade [viagemId]="id" *ngIf="currentAction == 1 && isEdit"></app-atividade>
-  <app-hospedagem *ngIf="currentAction == 2 && isEdit"></app-hospedagem>
+  <app-hospedagem  [viagemId]="id" *ngIf="currentAction == 2 && isEdit"></app-hospedagem>
 
   <div *ngIf="currentAction == 0">
     <div class="smallsize text-uppercase">{{pageType}}</div>
