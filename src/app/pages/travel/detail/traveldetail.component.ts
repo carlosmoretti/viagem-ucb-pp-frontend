@@ -39,8 +39,10 @@ export class TravelDetailComponent implements OnInit {
     retornoMensagem: any;
 
     isEdit = false;
+    descricaoViagem: string;
 
     atividades = [];
+
 
     private form: FormGroup;
 
@@ -74,6 +76,7 @@ export class TravelDetailComponent implements OnInit {
 
             this.dataPartida = new Date(x.inicio).toISOString().split("T")[0]
             this.dataRetorno = new Date(x.fim).toISOString().split("T")[0]
+            this.descricaoViagem = x.descricao;
 
             this.definirOrigemDestino(x.rotas.find((e) => e.tipoRota_Id == 1).endereco,
               x.rotas.find((e) => e.tipoRota_Id == 1).uf,
@@ -210,7 +213,8 @@ export class TravelDetailComponent implements OnInit {
                 rotas: clone,
                 inicio: this.dataPartida,
                 fim: this.dataRetorno,
-                id: this.route.snapshot.params.id
+                id: this.route.snapshot.params.id,
+                descricao: this.descricaoViagem
             }).subscribe(d=> {
                 this.retornoTipo = "sucesso";
                 this.toastr.success("Sua viagem foi editada com sucesso na aplicação.");

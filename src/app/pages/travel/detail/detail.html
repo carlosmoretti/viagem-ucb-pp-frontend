@@ -105,6 +105,13 @@
           </div>
       </div>
       <div class="col-sm-3">
+        <label>DESCRIÇÃO</label>
+        <input [(ngModel)]="descricaoViagem" [ngClass]="{ 'is-invalid' : !dataRetorno && validateFields }" type="text" class="form-control form-control-sm" />
+        <div class="invalid-feedback" *ngIf="descricaoViagem.length == 0 && validateFields">
+            Você deve preencher uma descrição para esta viagem.
+        </div>
+    </div>
+      <div class="col-sm-3">
           <button class="btn btn-sm btn-info mt-4" (click)="validateFields = true; definirOrigemDestino(saida, saidaUf, retorno, retornoUf)">Salvar</button>
       </div>
   </div>

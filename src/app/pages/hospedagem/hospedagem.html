@@ -17,6 +17,18 @@
             <div class="invalid-feedback" *ngIf="endereco.errors?.required && savePressed">Este campo é obrigatório!</div>
           </div>
           <div class="form-group">
+            <label>Avaliação (Estrelas)</label>
+            <select formControlName="estrelas" class="form-control form-control-sm">
+              <option>Selecione...</option>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="estrelas.errors?.required && savePressed">Este campo é obrigatório!</div>
+          </div>
+          <div class="form-group">
             <label>Tipo de Hospedagem</label>
             <select [ngClass]="{ 'is-invalid': tipoHospedagem.errors?.required && savePressed, 'is-valid': !tipoHospedagem.errors && savePressed }" formControlName="tipoHospedagem_Id" class="form-control form-control-sm">
               <option>Selecione...</option>
@@ -52,8 +64,14 @@
         <div *ngIf="hospedagens && !reloadingHospedagens; else carregando">
           <div *ngFor="let item of hospedagens">
             <div class="card mb-2">
-              <div class="card-header" (click)="visibleId = item.id">{{item.nome}}
-                <div (click)="remover(item.id)" class="float-right"><i class="fas fa-trash-alt"></i></div>
+              <div class="card-header" (click)="visibleId = item.id">
+                <div class="d-flex">
+                  {{item.nome}}
+                  <div class="ml-3">
+                    <i style="color: #cfae00" class="fas fa-star" *ngFor="let item of starsNumber(item.estrelas)"></i>
+                  </div>
+                  <div (click)="remover(item.id)" class="ml-auto"><i class="fas fa-trash-alt"></i></div>
+                </div>
               </div>
               <div class="card-body" *ngIf="visibleId === item.id">
                 <table class="table table-striped">

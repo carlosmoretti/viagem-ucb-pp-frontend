@@ -38,7 +38,8 @@ export class HospedagemComponent implements OnInit {
       diarias: ['', Validators.required],
       valorTotal: ['', Validators.required],
       avaliacao: ['', Validators.required],
-      Viagem_Id: ['', Validators.required]
+      Viagem_Id: ['', Validators.required],
+      estrelas: ['', Validators.required]
     })
   }
 
@@ -58,6 +59,14 @@ export class HospedagemComponent implements OnInit {
         this.obterHospedagens();
         this.reloadingHospedagens = false;
       })
+  }
+
+  starsNumber(stars: number) {
+    let ar = [];
+    for(let i =0; i < stars; i++)
+      ar.push({});
+
+    return ar;
   }
 
   save() {
@@ -105,5 +114,9 @@ export class HospedagemComponent implements OnInit {
 
   get avaliacao() {
     return this.form.controls['avaliacao'];
+  }
+
+  get estrelas() {
+    return this.form.controls['estrelas'];
   }
 }

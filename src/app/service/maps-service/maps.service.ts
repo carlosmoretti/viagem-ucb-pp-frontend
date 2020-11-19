@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpBackend, HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -7,7 +7,9 @@ import { environment } from '../../../environments/environment';
 })
 export class MapsService {
 
-    constructor(private http: HttpClient) {
+    private http: HttpClient;
+    constructor(private handler: HttpBackend) {
+      this.http = new HttpClient(handler);
     }
 
     toRoute(address: String) {

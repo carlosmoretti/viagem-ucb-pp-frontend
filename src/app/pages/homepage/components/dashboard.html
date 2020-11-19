@@ -28,7 +28,8 @@
         <div class="col-sm-3 mb-4" *ngFor="let item of getViagens; let i = index">
             <div class="card" [ngClass]="{ 'markedRemove' : item.id == removeId }">
                 <div class="card-header d-flex" [ngClass]="{ 'bg-danger' : item.id == removeId }">
-                    {{origem(item.rotas).uf}} — {{destino(item.rotas).uf}}
+                    <!-- {{origem(item.rotas).uf}} — {{destino(item.rotas).uf}} -->
+                    {{item.descricao}}
                     <div class="ml-auto" [ngClass]="{ 'text-white' : item.id == removeId, 'text-danger' : item.id != removeId }" [routerLink]="" (click)="removerViagem(item)"><i class="fas fa-trash-alt"></i></div>
                 </div>
                 <div class="card-body">
