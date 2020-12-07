@@ -1,0 +1,71 @@
+<div class="card mb-3">
+  <div class="card-header">Cadastrar Abastecimento</div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-sm-7">
+        <form class="form-group" [formGroup]="form">
+          <div class="form-group">
+            <label>Data</label>
+            <input formControlName="data" type="date" class="form-control form-control-sm" />
+            <div class="alert alert-danger mt-1" *ngIf="getErrors('data').errors?.required && salvou">Este campo é obrigatório.</div>
+          </div>
+          <div class="form-group">
+            <label>Valor</label>
+            <input formControlName="valor" type="number" class="form-control form-control-sm" />
+            <div class="alert alert-danger mt-1" *ngIf="getErrors('valor').errors?.required && salvou">Este campo é obrigatório.</div>
+          </div>
+          <div class="form-group">
+            <label>Quantidade</label>
+            <input formControlName="quantidade" type="number" class="form-control form-control-sm" />
+            <div class="alert alert-danger mt-1" *ngIf="getErrors('quantidade').errors?.required && salvou">Este campo é obrigatório.</div>
+          </div>
+          <div class="form-group">
+            <label>Local</label>
+            <select formControlName="rota_Id" class="form-control form-control-sm" [value]="origem.id" *ngIf="destino && origem">
+              <option [value]="origem.id">{{origem.endereco}}</option>
+              <option *ngFor="let item of rotas" [value]="item.id">{{item.endereco}} - {{item.uf}}</option>
+              <option [value]="destino.id">{{destino.endereco}}</option>
+              <div class="alert alert-danger mt-1" *ngIf="getErrors('rota_Id').errors?.required && salvou">Este campo é obrigatório.</div>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Referência</label>
+            <textarea class="form-control form-control-sm" formControlName="descricao">
+            </textarea>
+            <div class="alert alert-danger mt-1" *ngIf="getErrors('descricao').errors?.required && salvou">Este campo é obrigatório.</div>
+          </div>
+          <input type="submit" class="btn btn-sm btn-success" (click)="save()">
+        </form>
+      </div>
+      <div class="col-sm-5" style="overflow-y: scroll; height: 500px">
+        <div class="card mb-4" *ngFor="let item of abastecimentos">
+          <div class="card-header font-weight-bold d-flex">
+            {{item.rota.endereco}}
+            <div class="ml-auto" (click)="remover(item.id)"><i class="fas fa-trash-alt"></i></div>
+          </div>
+          <div class="card-body">
+            <table class="table">
+              <tr>
+                <td class="text-left">Endereço</td>
+                <td class="text-right">{{item.rota.endereco}}</td>
+              </tr>
+              <tr>
+                <td class="text-left">Data</td>
+                <td class="text-right">{{item.data | date: 'dd/MM/yyyy'}}</td>
+              </tr>
+              <tr>
+                <td class="text-left">Quantidade</td>
+                <td class="text-right">{{item.quantidade | number}}</td>
+              </tr>
+              <tr>
+                <td class="text-left">Valor</td>
+                <td class="text-right">{{item.valor | currency: 'BRL'}}</td>
+              </tr>
+            </table>
+            <span class="font-weight-bold">{{item.descricao}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

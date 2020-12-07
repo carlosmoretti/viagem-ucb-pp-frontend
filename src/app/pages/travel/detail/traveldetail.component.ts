@@ -235,7 +235,8 @@ export class TravelDetailComponent implements OnInit {
               this.service.post({
                 rotas: clone,
                 inicio: this.dataPartida,
-                fim: this.dataRetorno
+                fim: this.dataRetorno,
+                descricao: this.descricaoViagem
             }).subscribe(d=> {
                 this.retornoTipo = "sucesso";
                 this.toastr.success("Sua viagem foi cadastrada com sucesso na aplicação.");

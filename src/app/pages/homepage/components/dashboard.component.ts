@@ -50,6 +50,6 @@ export class DashboardComponent implements OnInit {
     }
 
     get getViagens() {
-        return this.viagens.slice(0, 7);
+        return this.viagens;
     }
 }

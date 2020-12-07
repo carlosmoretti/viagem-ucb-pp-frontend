@@ -1,3 +1,5 @@
+import { AbastecimentoService } from './../../service/abastecimento-service/abastecimento.service';
+import { AbastecimentoComponent } from './../abastecimento/abastecimento.component';
 import { HospedagemService } from './../../service/hospedagem-service/hospedagem.service';
 import { HospedagemComponent } from './../hospedagem/hospedagem.component';
 import { AtividadeService } from './../../service/atividade-service/atividade.service';
@@ -37,11 +39,13 @@ let routes: Routes = [
     declarations: [
         TravelDetailComponent,
         AtividadeComponent,
-        HospedagemComponent
+        HospedagemComponent,
+        AbastecimentoComponent
     ],
     providers: [
       AtividadeService,
-      HospedagemService
+      HospedagemService,
+      AbastecimentoService
     ]
 })
 export class TravelModule {

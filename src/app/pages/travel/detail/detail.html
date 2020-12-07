@@ -9,6 +9,9 @@
     <div class="mb-1" *ngIf="isEdit">
       <button class="btn btn-sm w-100" (click)="currentAction = 2" [ngClass]="{ 'btn-success' : currentAction == 2 }"><i class="fas fa-calendar-check"></i> Hospedagens</button>
     </div>
+    <div class="mb-1" *ngIf="isEdit">
+      <button class="btn btn-sm w-100" (click)="currentAction = 3" [ngClass]="{ 'btn-success' : currentAction == 3 }"><i class="fas fa-gas-pump"></i> Abastecimento</button>
+    </div>
   </div>
   <div class="col-sm-10">
     <nav aria-label="breadcrumb">
@@ -22,6 +25,7 @@
 
   <app-atividade [viagemId]="id" *ngIf="currentAction == 1 && isEdit"></app-atividade>
   <app-hospedagem  [viagemId]="id" *ngIf="currentAction == 2 && isEdit"></app-hospedagem>
+  <app-abastecimento [viagemId]="id" *ngIf="currentAction == 3 && isEdit"></app-abastecimento>
 
   <div *ngIf="currentAction == 0">
     <div class="smallsize text-uppercase">{{pageType}}</div>
@@ -34,8 +38,8 @@
           <div class="d-flex">
               <div class="form-group w-75 mr-2">
                   <label>ENDEREÇO DE PARTIDA</label>
-                  <input type="text" class="form-control form-control-sm" [ngClass]="{ 'is-invalid': (saida.length > 50 || !saida) && validateFields }" [(ngModel)]="saida"/>
-                  <div class="invalid-feedback" *ngIf="saida.length > 50">
+                  <input type="text" class="form-control form-control-sm" [ngClass]="{ 'is-invalid': (saida?.length > 50 || !saida) && validateFields }" [(ngModel)]="saida"/>
+                  <div class="invalid-feedback" *ngIf="saida?.length > 50">
                       O endereço de partida não pode possuir mais de 50 caracteres.
                   </div>
                   <div class="invalid-feedback" *ngIf="!saida">
@@ -44,8 +48,8 @@
               </div>
               <div class="form-group w-25">
                   <label>UF</label>
-                  <input type="text" class="form-control form-control-sm" [ngClass]="{ 'is-invalid': saidaUf.length != 2 && validateFields }" [(ngModel)]="saidaUf"/>
-                  <div class="invalid-feedback" *ngIf="saidaUf.length > 2">
+                  <input type="text" class="form-control form-control-sm" [ngClass]="{ 'is-invalid': saidaUf?.length != 2 && validateFields }" [(ngModel)]="saidaUf"/>
+                  <div class="invalid-feedback" *ngIf="saidaUf?.length > 2">
                       A UF não pode conter mais que 2 caracteres.
                   </div>
                   <div class="invalid-feedback" *ngIf="!saidaUf">
@@ -61,8 +65,8 @@
                       <label>ENDEREÇO DE RETORNO</label>
                       <a [routerLink]="" class="ml-auto" (click)="retorno = saida; retornoUf = saidaUf">[Copiar Partida]</a>
                   </div>
-                  <input type="text" class="form-control form-control-sm" [ngClass]="{ 'is-invalid': (retorno.length > 50 || !retorno) && validateFields }" [(ngModel)]="retorno"/>
-                  <div class="invalid-feedback" *ngIf="retorno.length > 50">
+                  <input type="text" class="form-control form-control-sm" [ngClass]="{ 'is-invalid': (retorno?.length > 50 || !retorno) && validateFields }" [(ngModel)]="retorno"/>
+                  <div class="invalid-feedback" *ngIf="retorno?.length > 50">
                       O endereço de retorno não pode possuir mais de 50 caracteres.
                   </div>
                   <div class="invalid-feedback" *ngIf="!retorno">
@@ -73,8 +77,8 @@
                   <div class="d-flex">
                       <label>UF</label>
                   </div>
-                  <input type="text" class="form-control form-control-sm" [ngClass]="{ 'is-invalid': retornoUf.length != 2 && validateFields }" [(ngModel)]="retornoUf"/>
-                  <div class="invalid-feedback" *ngIf="retornoUf.length > 2">
+                  <input type="text" class="form-control form-control-sm" [ngClass]="{ 'is-invalid': retornoUf?.length != 2 && validateFields }" [(ngModel)]="retornoUf"/>
+                  <div class="invalid-feedback" *ngIf="retornoUf?.length > 2">
                       A UF não pode conter mais que 2 caracteres.
                   </div>
                   <div class="invalid-feedback" *ngIf="!retornoUf">
@@ -107,7 +111,7 @@
       <div class="col-sm-3">
         <label>DESCRIÇÃO</label>
         <input [(ngModel)]="descricaoViagem" [ngClass]="{ 'is-invalid' : !dataRetorno && validateFields }" type="text" class="form-control form-control-sm" />
-        <div class="invalid-feedback" *ngIf="descricaoViagem.length == 0 && validateFields">
+        <div class="invalid-feedback" *ngIf="descricaoViagem?.length == 0 && validateFields">
             Você deve preencher uma descrição para esta viagem.
         </div>
     </div>
@@ -117,7 +121,7 @@
   </div>
   <hr />
   <div class="d-flex">
-      <div class="smallsize mb-3">DESTINOS ({{destinos.length}})</div>
+      <div class="smallsize mb-3">DESTINOS ({{destinos?.length}})</div>
       <a [routerLink]="" (click)="addVisible = !addVisible" class="ml-auto">
           {{addVisible ? 'Esconder' : 'Mostrar'}} inclusão de destino
       </a>
@@ -144,7 +148,7 @@
               </div>
           </div>
           <div class="alert alert-danger" *ngIf="!destino.value && !uf.value">Os campos são obrigatórios!</div>
-          <div class="alert alert-danger" *ngIf="uf.value.length != 2">UF deve possuir no máximo 2 caracteres.</div>
+          <div class="alert alert-danger" *ngIf="uf.value?.length != 2">UF deve possuir no máximo 2 caracteres.</div>
       </div>
   </div>
   <table class="table table-striped">
