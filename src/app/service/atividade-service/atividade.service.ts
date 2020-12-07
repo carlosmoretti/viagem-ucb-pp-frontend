@@ -13,17 +13,17 @@ export class AtividadeService {
 
   adicionar(obj) {
     console.log("obj", obj);
-    return this.http.post(environment.API_URL + "/atividade", obj)
+    return this.http.post(environment.API_URL + "atividade", obj)
       .pipe(take(1));
   }
 
   getAll(viagemId) {
-    return this.http.get(environment.API_URL + "/atividade/" + viagemId)
+    return this.http.get(environment.API_URL + "atividade/" + viagemId)
       .pipe(take(1));
   }
 
   remove(id) {
-    return this.http.delete(environment.API_URL + "/atividade/" + id)
+    return this.http.delete(environment.API_URL + "atividade/" + id)
       .pipe(take(1));
   }
 }

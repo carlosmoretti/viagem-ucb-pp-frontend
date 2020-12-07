@@ -11,14 +11,14 @@ export class AbastecimentoService {
   }
 
   buscarAbastecimento(viagemId) {
-    return this.http.get(environment.API_URL + "/abastecimento/viagem/" + viagemId);
+    return this.http.get(environment.API_URL + "abastecimento/viagem/" + viagemId);
   }
 
   cadastrarAbastecimento(obj) {
-    return this.http.post(environment.API_URL + "/abastecimento", obj);
+    return this.http.post(environment.API_URL + "abastecimento", obj);
   }
 
   remover(id) {
-    return this.http.delete(environment.API_URL + "/abastecimento/" + id);
+    return this.http.delete(environment.API_URL + "abastecimento" + id);
   }
 }
